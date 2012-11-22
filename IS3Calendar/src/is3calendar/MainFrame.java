@@ -4,7 +4,9 @@
  */
 package is3calendar;
 
+import calendarCode.CalendarEx;
 import java.awt.BorderLayout;
+import java.awt.Dialog;
 import javax.swing.JPanel;
 
 /**
@@ -20,18 +22,20 @@ public class MainFrame extends javax.swing.JFrame {
     public JPanel toDoPanel;
     
     public JPanel currentPanel;
+    
+    private CalendarEx cal;
 
     /**
      * Creates new form MainFrame
      */
-    public MainFrame() {
+    public MainFrame(CalendarEx calendar) {
         initComponents();
-
-        dayPanel = new DayPanel();
-        weekPanel = new WeekPanel();
-        monthPanel = new MonthPanel();
-        yearPanel = new YearPanel();
-        toDoPanel = new ToDoPanel();
+        cal = calendar;
+        dayPanel = new DayPanel(cal);
+        weekPanel = new WeekPanel(cal);
+        monthPanel = new MonthPanel(cal);
+        yearPanel = new YearPanel(cal);
+        toDoPanel = new ToDoPanel(cal);
 
         InternalPanel.setLayout(new java.awt.BorderLayout());
         
@@ -72,14 +76,19 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.setLayout(InternalPanelLayout);
         InternalPanelLayout.setHorizontalGroup(
             InternalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 565, Short.MAX_VALUE)
         );
         InternalPanelLayout.setVerticalGroup(
             InternalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 368, Short.MAX_VALUE)
+            .addGap(0, 386, Short.MAX_VALUE)
         );
 
         AddEventButton.setText("Add Event");
+        AddEventButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddEventButtonMouseClicked(evt);
+            }
+        });
 
         DayButton.setText("Day");
         DayButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -196,9 +205,9 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(UniversityButton)
                     .addComponent(SocialButton)
                     .addComponent(BirthdaysButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(InternalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(InternalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DayButton)
                     .addComponent(MonthButton)
@@ -256,6 +265,10 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TodayButtonMouseClicked
 
+    private void AddEventButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddEventButtonMouseClicked
+        //display AddEventDialog
+    }//GEN-LAST:event_AddEventButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -286,7 +299,8 @@ public class MainFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainFrame().setVisible(true);
+                //new MainFrame().setVisible(true);
+                //i just hope we don't need this
             }
         });
     }

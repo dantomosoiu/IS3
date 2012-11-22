@@ -4,17 +4,22 @@
  */
 package is3calendar;
 
+import calendarCode.CalendarEx;
+
 /**
  *
  * @author Dan
  */
 public class YearPanel extends javax.swing.JPanel {
 
+    private CalendarEx cal;
+    
     /**
      * Creates new form DayPanel
      */
-    public YearPanel() {
+    public YearPanel(CalendarEx calendar) {
         initComponents();
+        cal = calendar;
     }
 
     /**
@@ -29,6 +34,8 @@ public class YearPanel extends javax.swing.JPanel {
         PreviousButton = new javax.swing.JButton();
         NextButton = new javax.swing.JButton();
         YearLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         PreviousButton.setText("Previous");
 
@@ -36,6 +43,20 @@ public class YearPanel extends javax.swing.JPanel {
 
         YearLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         YearLabel.setText("YEAR");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "", "", "", ""
+            }
+        ));
+        jTable1.setGridColor(new java.awt.Color(4, 2, 2));
+        jTable1.setRowHeight(125);
+        jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -49,6 +70,11 @@ public class YearPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addComponent(NextButton)
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {NextButton, PreviousButton});
@@ -62,11 +88,18 @@ public class YearPanel extends javax.swing.JPanel {
                     .addComponent(NextButton)
                     .addComponent(YearLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(334, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(48, 48, 48)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                    .addContainerGap()))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton NextButton;
     private javax.swing.JButton PreviousButton;
     private javax.swing.JLabel YearLabel;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

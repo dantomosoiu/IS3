@@ -4,17 +4,21 @@
  */
 package is3calendar;
 
+import calendarCode.CalendarEx;
+
 /**
  *
  * @author Dan
  */
 public class MonthPanel extends javax.swing.JPanel {
 
+    private CalendarEx cal;
     /**
      * Creates new form DayPanel
      */
-    public MonthPanel() {
+    public MonthPanel(CalendarEx calendar) {
         initComponents();
+        cal = calendar;
     }
 
     /**
@@ -29,6 +33,8 @@ public class MonthPanel extends javax.swing.JPanel {
         PreviousButton = new javax.swing.JButton();
         NextButton = new javax.swing.JButton();
         MonthLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         PreviousButton.setText("Previous");
 
@@ -37,17 +43,37 @@ public class MonthPanel extends javax.swing.JPanel {
         MonthLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         MonthLabel.setText("MONTH (,YEAR?)");
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+            }
+        ));
+        jTable1.setGridColor(new java.awt.Color(4, 2, 2));
+        jTable1.setRowHeight(60);
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PreviousButton)
-                .addGap(147, 147, 147)
-                .addComponent(MonthLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
-                .addComponent(NextButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(PreviousButton)
+                        .addGap(147, 147, 147)
+                        .addComponent(MonthLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                        .addComponent(NextButton)))
                 .addContainerGap())
         );
 
@@ -61,12 +87,16 @@ public class MonthPanel extends javax.swing.JPanel {
                     .addComponent(PreviousButton)
                     .addComponent(NextButton)
                     .addComponent(MonthLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel MonthLabel;
     private javax.swing.JButton NextButton;
     private javax.swing.JButton PreviousButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

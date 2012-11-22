@@ -4,17 +4,23 @@
  */
 package is3calendar;
 
+import calendarCode.CalendarEx;
+
 /**
  *
  * @author Dan
  */
 public class ToDoPanel extends javax.swing.JPanel {
 
+    private CalendarEx cal;
+    
     /**
      * Creates new form DayPanel
      */
-    public ToDoPanel() {
+    public ToDoPanel(CalendarEx calendar) {
         initComponents();
+        
+        cal = calendar;
     }
 
     /**

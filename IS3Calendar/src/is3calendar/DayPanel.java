@@ -4,17 +4,25 @@
  */
 package is3calendar;
 
+import calendarCode.Appointment;
+import calendarCode.CalendarDate;
+import calendarCode.CalendarEx;
+import java.util.List;
+
 /**
  *
  * @author Dan
  */
 public class DayPanel extends javax.swing.JPanel {
 
+    private CalendarEx cal;
+    
     /**
      * Creates new form DayPanel
      */
-    public DayPanel() {
+    public DayPanel(CalendarEx calendar) {
         initComponents();
+        cal = calendar;
     }
 
     /**
@@ -29,6 +37,8 @@ public class DayPanel extends javax.swing.JPanel {
         PreviousButton = new javax.swing.JButton();
         NextButton = new javax.swing.JButton();
         DayLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         PreviousButton.setText("Previous");
 
@@ -37,17 +47,55 @@ public class DayPanel extends javax.swing.JPanel {
         DayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         DayLabel.setText("Day, Date");
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "time", "null"
+            }
+        ));
+        jTable1.setGridColor(new java.awt.Color(4, 2, 2));
+        jTable1.setRowHeight(15);
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(PreviousButton)
-                .addGap(147, 147, 147)
-                .addComponent(DayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
-                .addComponent(NextButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(PreviousButton)
+                        .addGap(147, 147, 147)
+                        .addComponent(DayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                        .addComponent(NextButton)))
                 .addContainerGap())
         );
 
@@ -61,12 +109,16 @@ public class DayPanel extends javax.swing.JPanel {
                     .addComponent(PreviousButton)
                     .addComponent(NextButton)
                     .addComponent(DayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(334, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DayLabel;
     private javax.swing.JButton NextButton;
     private javax.swing.JButton PreviousButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

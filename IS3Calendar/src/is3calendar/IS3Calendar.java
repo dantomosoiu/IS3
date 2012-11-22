@@ -4,16 +4,21 @@
  */
 package is3calendar;
 
+import calendarCode.CalendarEx;
+
 /**
  *
  * @author Dan
  */
+
 public class IS3Calendar {
 
     MainFrame mainFrame;
+    CalendarEx cal;
 
     public IS3Calendar() {
-        mainFrame = new MainFrame();
+        cal = new CalendarEx();
+        mainFrame = new MainFrame(cal);
     }
 
     /**
