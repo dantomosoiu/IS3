@@ -9,7 +9,7 @@ public class CalendarDate {
     // day, month and year of the Date
     public int day, month, year;
     // unique id given from the date. Counting from FIRST_DAY, FIRST_MONTH, FIRST_YEAR
-    int dateID;
+    static int dateID;
 
     public CalendarDate(int the_day, int the_month, int the_year) {
         day = the_day;
@@ -33,6 +33,8 @@ public class CalendarDate {
         // from the date, get the appropriate date ID
         return getDateID(cd.day, cd.month, cd.year);
     }
+    
+    public static int getID() {return dateID;}
 
     public static int getDateID(int d, int m, int y) {
         // get the date ID from the day, month and year

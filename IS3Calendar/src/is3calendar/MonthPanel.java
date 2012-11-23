@@ -72,21 +72,7 @@ public class MonthPanel extends javax.swing.JPanel {
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(startDay, endDay);
         Collections.sort(appointments);
         
-        /*String data[][];
         
-        //
-        //
-        //
-        //need to fix number of rows
-        //
-        //
-        //
-        if O
-        if(mondayOffset > 2){
-            data = new String[6][7];
-        } else {
-            data = new String[6][6];
-        }*/
         int size = 6;
         if (mondayOffset < 5) {
             jTable1.setSize(7, 5);
@@ -127,7 +113,7 @@ public class MonthPanel extends javax.swing.JPanel {
         jTable1.setDefaultRenderer(MonthCell.class, new MonthCellRenderer());
         
         jTable1.setModel(
-            new DefaultTableModel(data, new String [] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satirday", "Sunday"}) {
+            new DefaultTableModel(data, new String [] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}) {
             Class[] types = new Class[] {MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class};
             boolean[] canEdit = new boolean[] {false, false, false, false, false, false, false};
             @Override

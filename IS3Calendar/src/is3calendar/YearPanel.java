@@ -4,7 +4,14 @@
  */
 package is3calendar;
 
+import calendarCode.Appointment;
+import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -13,17 +20,100 @@ import calendarCode.CalendarEx;
 public class YearPanel extends javax.swing.JPanel {
 
     private CalendarEx cal;
-    
+    private int year;
+    private int mondayOffset;
     /**
      * Creates new form DayPanel
      */
     public YearPanel(CalendarEx calendar) {
         initComponents();
         cal = calendar;
+        year = CalendarEx.getCurrentYear();
+        
+        ListAppointMents();
     }
     
-    public void RefreshView(){
+    public void SetOffset(int month){
+        switch (CalendarDate.getDayNumberFromDayName(CalendarDate.getDay(1, month, year))) {
+            case 1:
+                mondayOffset = 1;
+                break;
+            case 2:
+                mondayOffset = 2;
+                break;
+            case 3:
+                mondayOffset = 3;
+                break;
+            case 4:
+                mondayOffset = 4;
+                break;
+            case 5:
+                mondayOffset = 5;
+                break;
+            case 6:
+                mondayOffset = 6;
+                break;
+            case 7:
+                mondayOffset = 7;
+                break;
+            default:
+                break;
+        }
+    }
     
+   public void RefreshView() {
+        ListAppointMents();
+    }
+
+    public void ListAppointMents() {
+        List<Appointment> appointments = cal.getAppointmentsBetweenDates(new CalendarDate(1,1,year), new CalendarDate(31,12,year));
+        Collections.sort(appointments);
+        
+        
+        
+        int[][] counters = new int[12][42];
+        int c=0;
+        for (int j = 0; j < 12; j++) {
+            SetOffset(j);
+            for (int i = mondayOffset+3; i < 42; i++) {
+                counters[j][i] = i-mondayOffset-2;
+                    c++;
+                
+            }
+        }
+        YearLabel.setText(Integer.toString(year));
+        YearCell[][] data = new YearCell[4][4];
+        int row = 0;
+        int col = 0;
+        if(col > 3){
+                col = 0;
+            }
+        for (int i = 0; i < counters.length; i++) {
+            data[row][col] = new YearCell(counters[col+4*row]);
+            col++;
+            if(col > 3){
+                col = 0;
+                row++;
+            }
+        }
+        
+        final TableModel model = new YearTableModel(data);
+   
+        JTable table = new JTable(model);
+        jTable1.setDefaultRenderer(YearCell.class, new YearCellRenderer());
+        
+        jTable1.setModel(
+            new DefaultTableModel(data, new String [] {"", "", "", ""}) {
+            Class[] types = new Class[] {YearCell.class, YearCell.class, YearCell.class, YearCell.class};
+            boolean[] canEdit = new boolean[] {false, false, false, false};
+            @Override
+            public Class getColumnClass(int columnIndex){ return types [columnIndex];}
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex){ return canEdit [columnIndex];}
+        });
+        
+        
+
     }
 
     /**
@@ -77,7 +167,7 @@ public class YearPanel extends javax.swing.JPanel {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -95,7 +185,7 @@ public class YearPanel extends javax.swing.JPanel {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(48, 48, 48)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                     .addContainerGap()))
         );
     }// </editor-fold>//GEN-END:initComponents

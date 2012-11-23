@@ -169,6 +169,8 @@ public class AddEventDialog extends javax.swing.JDialog {
 
         cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText()));
         
+        cal.saveCalendar("./cal");
+        
         this.mainFrame.RefreshView();
         this.dispose();
     }//GEN-LAST:event_SaveActionPerformed

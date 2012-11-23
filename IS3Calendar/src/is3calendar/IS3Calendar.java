@@ -18,6 +18,7 @@ public class IS3Calendar {
 
     public IS3Calendar() {
         cal = new CalendarEx();
+        cal.openCalendar("./cal");
         mainFrame = new MainFrame(cal);
     }
 

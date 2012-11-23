@@ -52,7 +52,7 @@ public class MonthCell extends javax.swing.JPanel {
         dayNum.setText("1");
         dayNum.setName("dayNum"); // NOI18N
 
-        numEvents.setFont(new java.awt.Font("Ubuntu", 0, 24)); // NOI18N
+        numEvents.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         numEvents.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         numEvents.setText("0");
         numEvents.setName("numEvents"); // NOI18N
