@@ -68,6 +68,11 @@ public class AddEventDialog extends javax.swing.JDialog {
         MinuteList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55" }));
 
         AMPMList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AM", "PM" }));
+        AMPMList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AMPMListActionPerformed(evt);
+            }
+        });
 
         DayList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
         DayList.setSelectedIndex(CalendarEx.getCurrentDay() -1);
@@ -86,7 +91,6 @@ public class AddEventDialog extends javax.swing.JDialog {
         RecurrenceButton.setText("Add Recurrence");
 
         Save.setText("Save");
-        Save.setActionCommand("Save");
         Save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaveActionPerformed(evt);
@@ -157,9 +161,12 @@ public class AddEventDialog extends javax.swing.JDialog {
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         
         System.out.println(Integer.parseInt(DayList.getSelectedItem().toString()));
-        CalendarDate date = new CalendarDate(Integer.parseInt(DayList.getSelectedItem().toString()), convertMonth(MonthList.getSelectedItem().toString()), Integer.parseInt(YearInput.getText()));
-        CalendarTime start = new CalendarTime(Integer.parseInt(HourList.getSelectedItem().toString()), Integer.parseInt(MinuteList.getSelectedItem().toString()) );
-        CalendarTime end = new CalendarTime(Integer.parseInt(HourList.getSelectedItem().toString())+1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
+        CalendarDate date = new CalendarDate(Integer.parseInt(DayList.getSelectedItem().toString()), CalendarEx.convertMonth(MonthList.getSelectedItem().toString()), Integer.parseInt(YearInput.getText()));
+        int hour = Integer.parseInt(HourList.getSelectedItem().toString());
+        if (AMPMList.getSelectedItem().toString().equals("PM")) hour += 12;
+        if (hour == 24) hour = 0;
+        CalendarTime start = new CalendarTime(hour, Integer.parseInt(MinuteList.getSelectedItem().toString()) );
+        CalendarTime end = new CalendarTime(hour+1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
         System.out.println(date.toString());
         System.out.println(start.toString());
         System.out.println(end.toString());
@@ -168,6 +175,10 @@ public class AddEventDialog extends javax.swing.JDialog {
         this.mainFrame.RefreshView();
         this.dispose();
     }//GEN-LAST:event_SaveActionPerformed
+
+    private void AMPMListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AMPMListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AMPMListActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,46 +225,7 @@ public class AddEventDialog extends javax.swing.JDialog {
             }
         });
     }
-    public int convertMonth(String monw) {
-        int x = 0;
-        if (monw.equals("Jan")) {
-            x = 1;
-        }
-        else if (monw.equals("Feb")) {
-            x = 2;
-        } 
-        else if (monw.equals("Mar")) {
-            x = 3;
-        } 
-        else if (monw.equals("Apr")) {
-            x = 4;
-        } 
-        else if (monw.equals("May")) {
-            x = 5;
-        } 
-        else if (monw.equals("Jun")) {
-            x = 6;
-        } 
-        else if (monw.equals("Jul")) {
-            x = 7;
-        } 
-        else if (monw.equals("Aug")) {
-            x = 8;
-        } 
-        else if (monw.equals("Sep")) {
-            x = 9;
-        } 
-        else if (monw.equals("Oct")) {
-            x = 10;
-        } 
-        else if (monw.equals("Nov")) {
-            x = 11;
-        } 
-        else if (monw.equals("Dec")) {
-            x = 12;
-        }
-        return x;
-}    
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox AMPMList;

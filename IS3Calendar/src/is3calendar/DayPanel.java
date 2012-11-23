@@ -29,12 +29,12 @@ public final class DayPanel extends javax.swing.JPanel {
         cal = calendar;
         day = new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
         ListAppointMents();
-        DayLabel.setText(day.toString());
+        DayLabel.setText(CalendarEx.getDateString(day));
     }
     
     public void RefreshView(){
         ListAppointMents();
-        DayLabel.setText(day.toString());
+        DayLabel.setText(CalendarEx.getDateString(day));
     }
     
     public void ListAppointMents(){
@@ -45,22 +45,10 @@ public final class DayPanel extends javax.swing.JPanel {
             String hr = Integer.toString(appointments.get(i).start_time.hr);
             String min = Integer.toString(appointments.get(i).start_time.min);
             if (appointments.get(i).start_time.hr < 10) hr = "0" + hr;
-            if (appointments.get(i).start_time.min < 10) hr = "0" + min;
-            data[i][0] = hr + ":" + min;
-            data[i][1] = appointments.get(i).description;
+            if (appointments.get(i).start_time.min < 10) min = "0" + min;
+            jTable1.getModel().setValueAt(hr + ":" + min, i, 0);
+            jTable1.getModel().setValueAt(appointments.get(i).description, i, 1);
         }
-        
-        
-        jTable1.setModel(
-            new DefaultTableModel(data, new String [] {"Time", "Event"}) {
-            Class[] types = new Class[] {String.class,String.class}; 
-            boolean[] canEdit = new boolean[] {false, false};
-            @Override
-            public Class getColumnClass(int columnIndex){ return types [columnIndex];}
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex){ return canEdit [columnIndex];}
-        });
-        
     }
 
     /**
@@ -79,6 +67,11 @@ public final class DayPanel extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
 
         PreviousButton.setText("Previous");
+        PreviousButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PreviousButtonActionPerformed(evt);
+            }
+        });
 
         NextButton.setText("Next");
 
@@ -115,10 +108,20 @@ public final class DayPanel extends javax.swing.JPanel {
             new String [] {
                 "time", "null"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.setGridColor(new java.awt.Color(4, 2, 2));
         jTable1.setRowHeight(15);
         jScrollPane1.setViewportView(jTable1);
+        jTable1.getColumnModel().getColumn(0).setMinWidth(80);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(80);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -152,6 +155,12 @@ public final class DayPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
+        day = CalendarDate.moveWeek(-1, day);
+        RefreshView();
+    }//GEN-LAST:event_PreviousButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DayLabel;
     private javax.swing.JButton NextButton;

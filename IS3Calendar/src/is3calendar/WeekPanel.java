@@ -27,10 +27,10 @@ public final class WeekPanel extends javax.swing.JPanel {
     public WeekPanel(CalendarEx calendar) {
         initComponents();
         cal = calendar;
-        startDay = new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
-        endDay = new CalendarDate(CalendarEx.getCurrentDay() + 6, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
-        System.out.println(startDay.toString());
-        System.out.println(endDay.toString());
+        startEndDay(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        //startDay = new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        //endDay = new CalendarDate(CalendarEx.getCurrentDay() + 6, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        
         ListAppointMents();
         WeekLabel.setText(startDay.toString() + " - " + endDay.toString());
     }
@@ -47,9 +47,9 @@ public final class WeekPanel extends javax.swing.JPanel {
 
         for (int i = 0; i < 24; i++) {
             if (i < 10) {
-                data[i][0] = "0" + i + ":00";
+                 jTable1.getModel().setValueAt("0" + i + ":00", i, 0);
             } else {
-                data[i][0] = i + ":00";
+                jTable1.getModel().setValueAt(i + ":00", i, 0);
             }
         }
         for (int i = 0; i < 24; i++) {
@@ -57,6 +57,7 @@ public final class WeekPanel extends javax.swing.JPanel {
                 for (int j = 0; j < 7; j++) {
                     System.out.println(a.date.day);
                     if (a.date.day == startDay.day + j && a.start_time.hr == i) {
+                        jTable1.getModel().setValueAt(a.description, i, j+1);
                         data[i][j + 1] = a.description;
                     }
                 }
@@ -64,7 +65,7 @@ public final class WeekPanel extends javax.swing.JPanel {
         }
 
 
-        jTable1.setModel(
+        /*jTable1.setModel(
                 new DefaultTableModel(data, new String[]{"Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}) {
                     Class[] types = new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class};
                     boolean[] canEdit = new boolean[]{false, false, false, false, false, false, false, false};
@@ -78,7 +79,7 @@ public final class WeekPanel extends javax.swing.JPanel {
                     public boolean isCellEditable(int rowIndex, int columnIndex) {
                         return canEdit[columnIndex];
                     }
-                });
+                });*/
 
     }
 
@@ -134,7 +135,15 @@ public final class WeekPanel extends javax.swing.JPanel {
             new String [] {
                 "Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -176,4 +185,10 @@ public final class WeekPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void startEndDay(int day,int month,int year) {
+        int dayNum = CalendarEx.convertDay(CalendarDate.getDay(day, month, year));
+        startDay = new CalendarDate(CalendarEx.getCurrentDay() - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        endDay = new CalendarDate(CalendarEx.getCurrentDay() + 6 - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+    }
 }

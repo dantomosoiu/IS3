@@ -4,6 +4,7 @@
  */
 package is3calendar;
 
+import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import java.awt.BorderLayout;
 import java.awt.Dialog;
@@ -32,8 +33,6 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
         System.out.println("PRINT ME");
         cal = calendar;
-        cal.setMax_id(5);
-        System.out.println(cal.getMax_id());
         dayPanel = new DayPanel(cal);
         weekPanel = new WeekPanel(cal);
         monthPanel = new MonthPanel(cal);
@@ -70,6 +69,7 @@ public class MainFrame extends javax.swing.JFrame {
         UniversityButton = new javax.swing.JButton();
         SocialButton = new javax.swing.JButton();
         BirthdaysButton = new javax.swing.JButton();
+        today = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -154,6 +154,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         BirthdaysButton.setText("Birthdays");
 
+        today.setEditable(false);
+        today.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        today.setText("Today is " + CalendarEx.getDateString(new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear())));
+        today.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                todayActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -162,7 +171,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(AddEventButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(today)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SettingsButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(HelpButton))
@@ -205,7 +216,8 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AddEventButton)
                     .addComponent(HelpButton)
-                    .addComponent(SettingsButton))
+                    .addComponent(SettingsButton)
+                    .addComponent(today, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AllCategoriesButton)
@@ -288,6 +300,10 @@ public class MainFrame extends javax.swing.JFrame {
         addEvent.setCal(cal);
     }//GEN-LAST:event_AddEventButtonActionPerformed
 
+    private void todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_todayActionPerformed
+
     public void RefreshView(){
         
         if(currentPanel.getClass().equals(dayPanel.getClass())){
@@ -358,5 +374,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton WeekButton;
     private javax.swing.JButton WorkButton;
     private javax.swing.JButton YearButton;
+    private javax.swing.JTextField today;
     // End of variables declaration//GEN-END:variables
 }

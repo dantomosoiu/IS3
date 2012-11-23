@@ -4,6 +4,7 @@
  */
 package is3calendar;
 
+import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 
 /**
@@ -13,18 +14,21 @@ import calendarCode.CalendarEx;
 public class MonthPanel extends javax.swing.JPanel {
 
     private CalendarEx cal;
+    private CalendarDate startDay;
+    private CalendarDate endDay;
+
     /**
      * Creates new form DayPanel
      */
     public MonthPanel(CalendarEx calendar) {
         initComponents();
         cal = calendar;
+        startEndDay(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
     }
 
-    public void RefreshView(){
-    
+    public void RefreshView() {
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,6 +45,11 @@ public class MonthPanel extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
 
         PreviousButton.setText("Previous");
+        PreviousButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PreviousButtonActionPerformed(evt);
+            }
+        });
 
         NextButton.setText("Next");
 
@@ -96,6 +105,9 @@ public class MonthPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
+    }//GEN-LAST:event_PreviousButtonActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel MonthLabel;
     private javax.swing.JButton NextButton;
@@ -103,4 +115,10 @@ public class MonthPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void startEndDay(int day, int month, int year) {
+        int dayNum = CalendarEx.convertDay(CalendarDate.getDay(day, month, year));
+        startDay = new CalendarDate(CalendarEx.getCurrentDay() - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        endDay = new CalendarDate(CalendarEx.getCurrentDay() + CalendarDate.getDaysOfMonth(month, year) - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+    }
 }

@@ -232,13 +232,6 @@ public class CalendarEx {
 		 return null;
 	 }
 
-    public long getMax_id() {
-        return max_id;
-    }
-
-    public void setMax_id(long max_id) {
-        this.max_id = max_id;
-    }
     
     public static int getCurrentDay() {
         return dates.get(Calendar.DATE);
@@ -249,6 +242,77 @@ public class CalendarEx {
     public static int getCurrentYear() {
         return dates.get(Calendar.YEAR);
     }
-	
+
+    public static int convertMonth(String monw) {
+        int x = 0;
+        if (monw.equals("Jan")) {
+            x = 1;
+        }
+        else if (monw.equals("Feb")) {
+            x = 2;
+        } 
+        else if (monw.equals("Mar")) {
+            x = 3;
+        } 
+        else if (monw.equals("Apr")) {
+            x = 4;
+        } 
+        else if (monw.equals("May")) {
+            x = 5;
+        } 
+        else if (monw.equals("Jun")) {
+            x = 6;
+        } 
+        else if (monw.equals("Jul")) {
+            x = 7;
+        } 
+        else if (monw.equals("Aug")) {
+            x = 8;
+        } 
+        else if (monw.equals("Sep")) {
+            x = 9;
+        } 
+        else if (monw.equals("Oct")) {
+            x = 10;
+        } 
+        else if (monw.equals("Nov")) {
+            x = 11;
+        } 
+        else if (monw.equals("Dec")) {
+            x = 12;
+        }
+        return x;
+    }
+    
+    public static int convertDay(String dayx) {
+        int x = 0;
+        if (dayx.equals("MONDAY")) {
+            x = 1;
+        }
+        else if (dayx.equals("TUESDAY")) {
+            x = 2;
+        } 
+        else if (dayx.equals("WEDNESDAY")) {
+            x = 3;
+        } 
+        else if (dayx.equals("THURSDAY")) {
+            x = 4;
+        } 
+        else if (dayx.equals("FRIDAY")) {
+            x = 5;
+        } 
+        else if (dayx.equals("SATURDAY")) {
+            x = 6;
+        } 
+        else if (dayx.equals("SUNDAY")) {
+            x = 7;
+        } 
+        return x;
+    }   
+    
+    public static String getDateString(CalendarDate d) {
+        String dayName = CalendarDate.getDay(d.day, d.month, d.year);
+       return dayName.substring(0, 1) + dayName.toLowerCase().substring(1, dayName.length()) + " " + d.toString();
+    }
 	
 }

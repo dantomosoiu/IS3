@@ -26,7 +26,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="AddEventButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="today" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="SettingsButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="HelpButton" min="-2" max="-2" attributes="0"/>
@@ -75,6 +77,7 @@
                   <Component id="AddEventButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="HelpButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="SettingsButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="today" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -212,6 +215,18 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Birthdays"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="today">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="&quot;Today is &quot; + CalendarEx.getDateString(new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear()))" type="code"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="todayActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
