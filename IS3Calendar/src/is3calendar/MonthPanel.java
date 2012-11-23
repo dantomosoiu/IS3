@@ -28,56 +28,96 @@ public class MonthPanel extends javax.swing.JPanel {
         initComponents();
         cal = calendar;
         startEndDay(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        SetOffset();
+        
 
-        switch (CalendarDate.getDayNumberFromDayName(CalendarDate.getDay(startDay.day, startDay.day, startDay.day))) {
+        ListAppointMents();
+        MonthLabel.setText(CalendarEx.monthToString(startDay.month) + ", " + startDay.year);
+    }
+
+    public void SetOffset(){
+        switch (CalendarDate.getDayNumberFromDayName(CalendarDate.getDay(startDay.day, startDay.month, startDay.year))) {
             case 1:
-                mondayOffset = 0;
-                break;
-            case 2:
                 mondayOffset = 1;
                 break;
-            case 3:
+            case 2:
                 mondayOffset = 2;
                 break;
-            case 4:
+            case 3:
                 mondayOffset = 3;
                 break;
-            case 5:
+            case 4:
                 mondayOffset = 4;
                 break;
-            case 6:
+            case 5:
                 mondayOffset = 5;
                 break;
-            case 7:
+            case 6:
                 mondayOffset = 6;
+                break;
+            case 7:
+                mondayOffset = 7;
                 break;
             default:
                 break;
         }
-
-        //ListAppointMents();
-        MonthLabel.setText(CalendarEx.monthToString(startDay.month) + ", " + startDay.year);
     }
-
+    
     public void RefreshView() {
+        SetOffset();
+        ListAppointMents();
     }
 
     public void ListAppointMents() {
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(startDay, endDay);
         Collections.sort(appointments);
-        String data[][] = new String[6][7];
+        
+        String data[][];
+        
+        //
+        //
+        //
+        //need to fix number of rows
+        //
+        //
+        //
+        
+        if(mondayOffset > 2){
+            data = new String[6][7];
+        } else {
+            data = new String[6][6];
+        }
+        
 
-        for (int i = 0; i < 24; i++) {
+        int[] counters = new int[CalendarDate.getDaysOfMonth(startDay.month, startDay.year)];
+
+
+
+        for (int i = 0; i < counters.length; i++) {
             for (Appointment a : appointments) {
-                for (int j = 0; j < 7; j++) {
-                    System.out.println(a.date.day);
-                    if (a.date.day == startDay.day + j && a.start_time.hr == i) {
-                        jTable1.getModel().setValueAt(a.description, i, j + 1);
-                        data[i][j + 1] = a.description;
-                    }
+                if (a.date.day == startDay.day + i) {
+                    counters[i]++;
                 }
             }
         }
+        
+        int row = 0;
+        int col = mondayOffset;
+        for (int i = 0; i < counters.length; i++) {
+            StringBuilder box = new StringBuilder();
+            box.append("<HTML><b>");
+            box.append(i+1);
+            box.append("</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+            box.append(counters[i]);
+            box.append("<br></HTML>");
+            jTable1.getModel().setValueAt(box.toString(), row, col);
+            col++;
+            if(col > 6){
+                col = 0;
+                row++;
+            }
+        }
+
     }
 
     /**
@@ -168,8 +208,7 @@ public class MonthPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void startEndDay(int day, int month, int year) {
-        int dayNum = CalendarEx.convertDay(CalendarDate.getDay(day, month, year));
-        startDay = new CalendarDate(CalendarEx.getCurrentDay() - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
-        endDay = new CalendarDate(CalendarEx.getCurrentDay() + CalendarDate.getDaysOfMonth(month, year) - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        startDay = new CalendarDate(1, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        endDay = new CalendarDate(CalendarDate.getDaysOfMonth(month, year), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
     }
 }
