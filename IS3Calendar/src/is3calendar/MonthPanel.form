@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -23,7 +23,7 @@
                   <Group type="102" attributes="0">
                       <Component id="PreviousButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="MonthLabel" max="32767" attributes="0"/>
+                      <Component id="MonthLabel" pref="400" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="NextButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -61,6 +61,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Next"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NextButtonActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="MonthLabel">
       <Properties>
@@ -79,13 +82,13 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="7" rowCount="6">
-                <Column editable="true" title="Monday" type="java.lang.Object"/>
-                <Column editable="true" title="Tuesday" type="java.lang.Object"/>
-                <Column editable="true" title="Wednesday" type="java.lang.Object"/>
-                <Column editable="true" title="Thursday" type="java.lang.Object"/>
-                <Column editable="true" title="Friday" type="java.lang.Object"/>
-                <Column editable="true" title="Saturday" type="java.lang.Object"/>
-                <Column editable="true" title="Sunday" type="java.lang.Object"/>
+                <Column editable="false" title="Monday" type="java.lang.Object"/>
+                <Column editable="false" title="Tuesday" type="java.lang.Object"/>
+                <Column editable="false" title="Wednesday" type="java.lang.Object"/>
+                <Column editable="false" title="Thursday" type="java.lang.Object"/>
+                <Column editable="false" title="Friday" type="java.lang.Object"/>
+                <Column editable="false" title="Saturday" type="java.lang.Object"/>
+                <Column editable="false" title="Sunday" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

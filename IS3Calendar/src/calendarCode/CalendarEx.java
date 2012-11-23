@@ -305,7 +305,7 @@ public class CalendarEx {
     }
 
     public static int convertDay(String dayx) {
-        int x = 0;
+        int x = 1000000;
         if (dayx.equals("Monday")) {
             x = 1;
         } else if (dayx.equals("Tuesday")) {
@@ -319,7 +319,7 @@ public class CalendarEx {
         } else if (dayx.equals("Saturday")) {
             x = 6;
         } else if (dayx.equals("Sunday")) {
-            x = 7;
+            x = 0;
         }
         return x;
     }

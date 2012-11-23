@@ -9,6 +9,9 @@ import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -29,10 +32,7 @@ public class MonthPanel extends javax.swing.JPanel {
         cal = calendar;
         startEndDay(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
         SetOffset();
-        
-
         ListAppointMents();
-        MonthLabel.setText(CalendarEx.monthToString(startDay.month) + ", " + startDay.year);
     }
 
     public void SetOffset(){
@@ -72,7 +72,7 @@ public class MonthPanel extends javax.swing.JPanel {
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(startDay, endDay);
         Collections.sort(appointments);
         
-        String data[][];
+        /*String data[][];
         
         //
         //
@@ -81,18 +81,23 @@ public class MonthPanel extends javax.swing.JPanel {
         //
         //
         //
-        
+        if O
         if(mondayOffset > 2){
             data = new String[6][7];
         } else {
             data = new String[6][6];
+        }*/
+        int size = 6;
+        if (mondayOffset < 5) {
+            jTable1.setSize(7, 5);
+            size = 5;
+        }
+        else {
+            jTable1.setSize(7, 6);
+            size = 6;
         }
         
-
         int[] counters = new int[CalendarDate.getDaysOfMonth(startDay.month, startDay.year)];
-
-
-
         for (int i = 0; i < counters.length; i++) {
             for (Appointment a : appointments) {
                 if (a.date.day == startDay.day + i) {
@@ -100,23 +105,38 @@ public class MonthPanel extends javax.swing.JPanel {
                 }
             }
         }
-        
+        MonthLabel.setText(CalendarEx.monthToString(startDay.month) + ", " + startDay.year);
+        MonthCell[][] data = new MonthCell[size][7];
         int row = 0;
         int col = mondayOffset;
+        if(col > 6){
+                col = 0;
+            }
         for (int i = 0; i < counters.length; i++) {
-            StringBuilder box = new StringBuilder();
-            box.append("<HTML><b>");
-            box.append(i+1);
-            box.append("</b><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
-            box.append(counters[i]);
-            box.append("<br></HTML>");
-            jTable1.getModel().setValueAt(box.toString(), row, col);
+            data[row][col] = new MonthCell(i+1, counters[i]);
             col++;
             if(col > 6){
                 col = 0;
                 row++;
             }
         }
+        
+        final TableModel model = new MonthTableModel(data, size);
+   
+        JTable table = new JTable(model);
+        jTable1.setDefaultRenderer(MonthCell.class, new MonthCellRenderer());
+        
+        jTable1.setModel(
+            new DefaultTableModel(data, new String [] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satirday", "Sunday"}) {
+            Class[] types = new Class[] {MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class};
+            boolean[] canEdit = new boolean[] {false, false, false, false, false, false, false};
+            @Override
+            public Class getColumnClass(int columnIndex){ return types [columnIndex];}
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex){ return canEdit [columnIndex];}
+        });
+        
+        
 
     }
 
@@ -143,6 +163,11 @@ public class MonthPanel extends javax.swing.JPanel {
         });
 
         NextButton.setText("Next");
+        NextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NextButtonActionPerformed(evt);
+            }
+        });
 
         MonthLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         MonthLabel.setText("MONTH (,YEAR?)");
@@ -159,7 +184,15 @@ public class MonthPanel extends javax.swing.JPanel {
             new String [] {
                 "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.setGridColor(new java.awt.Color(4, 2, 2));
         jTable1.setRowHeight(60);
         jScrollPane1.setViewportView(jTable1);
@@ -175,7 +208,7 @@ public class MonthPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PreviousButton)
                         .addGap(18, 18, 18)
-                        .addComponent(MonthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(MonthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(NextButton)))
                 .addContainerGap())
@@ -197,8 +230,19 @@ public class MonthPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
-    }//GEN-LAST:event_PreviousButtonActionPerformed
+private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextButtonActionPerformed
+        CalendarDate day = CalendarDate.moveMonth(1, startDay);
+        startEndDay(day.day, day.month, day.year);
+        RefreshView();
+}//GEN-LAST:event_NextButtonActionPerformed
+
+    private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        CalendarDate day = CalendarDate.moveMonth(-1, startDay);
+        startEndDay(day.day, day.month, day.year);
+        RefreshView();
+    }
+    
+                                                  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel MonthLabel;
     private javax.swing.JButton NextButton;
@@ -208,7 +252,7 @@ public class MonthPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void startEndDay(int day, int month, int year) {
-        startDay = new CalendarDate(1, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
-        endDay = new CalendarDate(CalendarDate.getDaysOfMonth(month, year), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        startDay = new CalendarDate(1, month, year);
+        endDay = new CalendarDate(CalendarDate.getDaysOfMonth(month, year), month, year);
     }
 }

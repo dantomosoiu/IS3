@@ -160,16 +160,13 @@ public class AddEventDialog extends javax.swing.JDialog {
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         
-        System.out.println(Integer.parseInt(DayList.getSelectedItem().toString()));
         CalendarDate date = new CalendarDate(Integer.parseInt(DayList.getSelectedItem().toString()), CalendarEx.convertMonth(MonthList.getSelectedItem().toString()), Integer.parseInt(YearInput.getText()));
         int hour = Integer.parseInt(HourList.getSelectedItem().toString());
         if (AMPMList.getSelectedItem().toString().equals("PM")) hour += 12;
         if (hour == 24) hour = 0;
         CalendarTime start = new CalendarTime(hour, Integer.parseInt(MinuteList.getSelectedItem().toString()) );
         CalendarTime end = new CalendarTime(hour+1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
-        System.out.println(date.toString());
-        System.out.println(start.toString());
-        System.out.println(end.toString());
+
         cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText()));
         
         this.mainFrame.RefreshView();

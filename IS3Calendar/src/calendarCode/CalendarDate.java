@@ -161,19 +161,19 @@ public class CalendarDate {
 
         switch (the_id % 7) {
             case 0:
-                return "THURSDAY";
+                return "Thursday";
             case 1:
-                return "FRIDAY";
+                return "Friday";
             case 2:
-                return "SATURDAY";
+                return "Saturday";
             case 3:
-                return "SUNDAY";
+                return "Sunday";
             case 4:
-                return "MONDAY";
+                return "Monday";
             case 5:
-                return "TUESDAY";
+                return "Tuesday";
             case 6:
-                return "WEDNESDAY";
+                return "Wednesday";
             default:
                 return "ANYDAY";
         }
@@ -195,13 +195,14 @@ public class CalendarDate {
     }
 
     public static CalendarDate moveMonth(int i, CalendarDate d) {
-        if ((d.month + i) > 0 && (d.month + i) < 12) {
+        if ((d.month + i)%12 > 0 && (d.month+i)<13) {
             return new CalendarDate(d.day, (d.month + i) % 12, d.year);
-        } else if ((d.month + i) > 12) {
-            return new CalendarDate(d.day, 1, d.year + 1);
-        } else {
+        } else if ((d.month + i)%12 > 0) {
+            return new CalendarDate(d.day, 1, d.year+1);
+        } else if ((d.month + i)<1) {
             return new CalendarDate(d.day, 12, d.year - 1);
         }
+        else return new CalendarDate(d.day, (12), d.year);
     }
 
     public static boolean isLeap(int year) {

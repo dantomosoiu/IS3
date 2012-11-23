@@ -31,7 +31,6 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame(CalendarEx calendar) {
         initComponents();
-        System.out.println("PRINT ME");
         cal = calendar;
         dayPanel = new DayPanel(cal);
         weekPanel = new WeekPanel(cal);

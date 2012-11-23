@@ -53,33 +53,20 @@ public final class WeekPanel extends javax.swing.JPanel {
             }
         }
         for (int i = 0; i < 24; i++) {
+            for (int j = 1; j < 8; j++) {
+                jTable1.getModel().setValueAt("", i, j);
+                //data[i][j] = "";
+            }
             for (Appointment a : appointments) {
                 for (int j = 0; j < 7; j++) {
-                    System.out.println(a.date.day);
                     if (a.date.day == startDay.day + j && a.start_time.hr == i) {
                         jTable1.getModel().setValueAt(a.description, i, j+1);
-                        data[i][j + 1] = a.description;
+                        //data[i][j + 1] = a.description;
                     }
+
                 }
             }
         }
-
-
-        /*jTable1.setModel(
-                new DefaultTableModel(data, new String[]{"Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}) {
-                    Class[] types = new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class};
-                    boolean[] canEdit = new boolean[]{false, false, false, false, false, false, false, false};
-
-                    @Override
-                    public Class getColumnClass(int columnIndex) {
-                        return types[columnIndex];
-                    }
-
-                    @Override
-                    public boolean isCellEditable(int rowIndex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                });*/
 
     }
 
@@ -99,11 +86,21 @@ public final class WeekPanel extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
 
         PreviousButton.setText("Previous");
+        PreviousButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PreviousButtonActionPerformed(evt);
+            }
+        });
 
         WeekLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         WeekLabel.setText("Week, Date");
 
         NextButton.setText("Next");
+        NextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NextButtonActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -157,7 +154,7 @@ public final class WeekPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PreviousButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(WeekLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(WeekLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(NextButton)))
                 .addContainerGap())
@@ -178,6 +175,19 @@ public final class WeekPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
+    CalendarDate d = CalendarDate.moveWeek(-1, startDay);
+    startEndDay(d.day, d.month, d.year);
+    RefreshView();
+}//GEN-LAST:event_PreviousButtonActionPerformed
+
+private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextButtonActionPerformed
+    CalendarDate d = CalendarDate.moveWeek(1, startDay);
+    startEndDay(d.day, d.month, d.year);
+    RefreshView();
+}//GEN-LAST:event_NextButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton NextButton;
     private javax.swing.JButton PreviousButton;
@@ -188,7 +198,7 @@ public final class WeekPanel extends javax.swing.JPanel {
 
     private void startEndDay(int day,int month,int year) {
         int dayNum = CalendarEx.convertDay(CalendarDate.getDay(day, month, year));
-        startDay = new CalendarDate(CalendarEx.getCurrentDay() - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
-        endDay = new CalendarDate(CalendarEx.getCurrentDay() + 6 - dayNum, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        startDay = CalendarDate.moveDay(-dayNum, new CalendarDate(day,month,year));
+        endDay = CalendarDate.moveDay(-dayNum+6, new CalendarDate(day,month,year));
     }
 }

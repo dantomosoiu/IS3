@@ -41,13 +41,19 @@ public final class DayPanel extends javax.swing.JPanel {
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, day);
         Collections.sort(appointments);
         String data[][] = new String[24][2];
-        for (int i = 0; i < appointments.size(); i++) {
-            String hr = Integer.toString(appointments.get(i).start_time.hr);
-            String min = Integer.toString(appointments.get(i).start_time.min);
-            if (appointments.get(i).start_time.hr < 10) hr = "0" + hr;
-            if (appointments.get(i).start_time.min < 10) min = "0" + min;
-            jTable1.getModel().setValueAt(hr + ":" + min, i, 0);
-            jTable1.getModel().setValueAt(appointments.get(i).description, i, 1);
+        for (int i = 0; i < 24; i++) {
+            if (i < appointments.size()) {
+                String hr = Integer.toString(appointments.get(i).start_time.hr);
+                String min = Integer.toString(appointments.get(i).start_time.min);
+                if (appointments.get(i).start_time.hr < 10) hr = "0" + hr;
+                if (appointments.get(i).start_time.min < 10) min = "0" + min;
+                jTable1.getModel().setValueAt(hr + ":" + min, i, 0);
+                jTable1.getModel().setValueAt(appointments.get(i).description, i, 1);
+            }
+            else {
+                jTable1.getModel().setValueAt("", i, 0);
+                jTable1.getModel().setValueAt("", i, 1);
+            }
         }
     }
 
@@ -74,6 +80,11 @@ public final class DayPanel extends javax.swing.JPanel {
         });
 
         NextButton.setText("Next");
+        NextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NextButtonActionPerformed(evt);
+            }
+        });
 
         DayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         DayLabel.setText("Day, Date");
@@ -130,12 +141,12 @@ public final class DayPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PreviousButton)
-                        .addGap(147, 147, 147)
-                        .addComponent(DayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(DayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(NextButton)))
                 .addContainerGap())
         );
@@ -157,9 +168,14 @@ public final class DayPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
-        day = CalendarDate.moveWeek(-1, day);
+        day = CalendarDate.moveDay(-1, day);
         RefreshView();
     }//GEN-LAST:event_PreviousButtonActionPerformed
+
+private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextButtonActionPerformed
+        day = CalendarDate.moveDay(1, day);
+        RefreshView();
+}//GEN-LAST:event_NextButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel DayLabel;
