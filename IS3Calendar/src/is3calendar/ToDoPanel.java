@@ -22,6 +22,10 @@ public class ToDoPanel extends javax.swing.JPanel {
         
         cal = calendar;
     }
+    
+    public void RefreshView(){
+    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -4,22 +4,82 @@
  */
 package is3calendar;
 
+import calendarCode.Appointment;
+import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Dan
  */
-public class WeekPanel extends javax.swing.JPanel {
+public final class WeekPanel extends javax.swing.JPanel {
 
     private CalendarEx cal;
-    
+    private CalendarDate startDay;
+    private CalendarDate endDay;
+
     /**
      * Creates new form WeekPanel
      */
     public WeekPanel(CalendarEx calendar) {
         initComponents();
         cal = calendar;
+        startDay = new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        endDay = new CalendarDate(CalendarEx.getCurrentDay() + 6, CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        System.out.println(startDay.toString());
+        System.out.println(endDay.toString());
+        ListAppointMents();
+        WeekLabel.setText(startDay.toString() + " - " + endDay.toString());
+    }
+
+    public void RefreshView() {
+        ListAppointMents();
+        WeekLabel.setText(startDay.toString() + " - " + endDay.toString());
+    }
+
+    public void ListAppointMents() {
+        List<Appointment> appointments = cal.getAppointmentsBetweenDates(startDay, endDay);
+        Collections.sort(appointments);
+        String data[][] = new String[24][8];
+
+        for (int i = 0; i < 24; i++) {
+            if (i < 10) {
+                data[i][0] = "0" + i + ":00";
+            } else {
+                data[i][0] = i + ":00";
+            }
+        }
+        for (int i = 0; i < 24; i++) {
+            for (Appointment a : appointments) {
+                for (int j = 0; j < 7; j++) {
+                    System.out.println(a.date.day);
+                    if (a.date.day == startDay.day + j && a.start_time.hr == i) {
+                        data[i][j + 1] = a.description;
+                    }
+                }
+            }
+        }
+
+
+        jTable1.setModel(
+                new DefaultTableModel(data, new String[]{"Time", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}) {
+                    Class[] types = new Class[]{String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class};
+                    boolean[] canEdit = new boolean[]{false, false, false, false, false, false, false, false};
+
+                    @Override
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+
     }
 
     /**
@@ -84,12 +144,12 @@ public class WeekPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PreviousButton)
-                        .addGap(145, 145, 145)
-                        .addComponent(WeekLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 154, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(WeekLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(NextButton)))
                 .addContainerGap())
         );

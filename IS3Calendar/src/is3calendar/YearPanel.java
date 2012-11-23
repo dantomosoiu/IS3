@@ -21,6 +21,10 @@ public class YearPanel extends javax.swing.JPanel {
         initComponents();
         cal = calendar;
     }
+    
+    public void RefreshView(){
+    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

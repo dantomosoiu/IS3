@@ -4,18 +4,37 @@
  */
 package is3calendar;
 
+import calendarCode.Appointment;
+import calendarCode.CalendarDate;
+import calendarCode.CalendarEx;
+import calendarCode.CalendarTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author 1007414g
  */
 public class AddEventDialog extends javax.swing.JDialog {
 
+    private CalendarEx cal;
+    private MainFrame mainFrame;
+    
     /**
      * Creates new form AddEventDialog
      */
-    public AddEventDialog(java.awt.Frame parent, boolean modal) {
+    public AddEventDialog(java.awt.Frame parent, boolean modal, CalendarEx calendar, MainFrame mainFrame) {
         super(parent, modal);
         initComponents();
+        cal = calendar;
+        this.mainFrame = mainFrame;
+    }
+
+    public void setCal(CalendarEx cal) {
+        this.cal = cal;
+    }
+
+    AddEventDialog() {
     }
 
     /**
@@ -38,6 +57,7 @@ public class AddEventDialog extends javax.swing.JDialog {
         InviteInput = new javax.swing.JTextField();
         CategoryInput = new javax.swing.JTextField();
         RecurrenceButton = new javax.swing.JButton();
+        Save = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -50,10 +70,12 @@ public class AddEventDialog extends javax.swing.JDialog {
         AMPMList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "AM", "PM" }));
 
         DayList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+        DayList.setSelectedIndex(CalendarEx.getCurrentDay() -1);
 
         MonthList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Jan", "Feb", "Mar", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }));
+        MonthList.setSelectedIndex(CalendarEx.getCurrentMonth());
 
-        YearInput.setText("2012");
+        YearInput.setText(Integer.toString(CalendarEx.getCurrentYear()));
 
         LocationInput1.setText("Add Location");
 
@@ -63,36 +85,48 @@ public class AddEventDialog extends javax.swing.JDialog {
 
         RecurrenceButton.setText("Add Recurrence");
 
+        Save.setText("Save");
+        Save.setActionCommand("Save");
+        Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(112, 112, 112)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(RecurrenceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(DayList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(MonthList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(YearInput))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(HourList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(MinuteList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(AMPMList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(EventNameInput)
+                        .addComponent(LocationInput1, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(InviteInput)
+                        .addComponent(CategoryInput, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(DayList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(MonthList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(YearInput))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(HourList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(MinuteList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(AMPMList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(EventNameInput)
-                    .addComponent(LocationInput1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(InviteInput)
-                    .addComponent(CategoryInput)
-                    .addComponent(RecurrenceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(113, Short.MAX_VALUE))
+                        .addGap(39, 39, 39)
+                        .addComponent(Save, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(22, 22, 22)
                 .addComponent(EventNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -110,18 +144,35 @@ public class AddEventDialog extends javax.swing.JDialog {
                 .addComponent(InviteInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CategoryInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(RecurrenceButton)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(Save)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
+        
+        System.out.println(Integer.parseInt(DayList.getSelectedItem().toString()));
+        CalendarDate date = new CalendarDate(Integer.parseInt(DayList.getSelectedItem().toString()), convertMonth(MonthList.getSelectedItem().toString()), Integer.parseInt(YearInput.getText()));
+        CalendarTime start = new CalendarTime(Integer.parseInt(HourList.getSelectedItem().toString()), Integer.parseInt(MinuteList.getSelectedItem().toString()) );
+        CalendarTime end = new CalendarTime(Integer.parseInt(HourList.getSelectedItem().toString())+1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
+        System.out.println(date.toString());
+        System.out.println(start.toString());
+        System.out.println(end.toString());
+        cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText()));
+        
+        this.mainFrame.RefreshView();
+        this.dispose();
+    }//GEN-LAST:event_SaveActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void run(final CalendarEx calendar, final MainFrame mainframe) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -148,17 +199,62 @@ public class AddEventDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AddEventDialog dialog = new AddEventDialog(new javax.swing.JFrame(), true);
+                AddEventDialog dialog = new AddEventDialog(new javax.swing.JFrame(), true, calendar, mainframe);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                        try {
+                            this.finalize();
+                        } catch (Throwable ex) {
+                            Logger.getLogger(AddEventDialog.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 });
                 dialog.setVisible(true);
             }
         });
     }
+    public int convertMonth(String monw) {
+        int x = 0;
+        if (monw.equals("Jan")) {
+            x = 1;
+        }
+        else if (monw.equals("Feb")) {
+            x = 2;
+        } 
+        else if (monw.equals("Mar")) {
+            x = 3;
+        } 
+        else if (monw.equals("Apr")) {
+            x = 4;
+        } 
+        else if (monw.equals("May")) {
+            x = 5;
+        } 
+        else if (monw.equals("Jun")) {
+            x = 6;
+        } 
+        else if (monw.equals("Jul")) {
+            x = 7;
+        } 
+        else if (monw.equals("Aug")) {
+            x = 8;
+        } 
+        else if (monw.equals("Sep")) {
+            x = 9;
+        } 
+        else if (monw.equals("Oct")) {
+            x = 10;
+        } 
+        else if (monw.equals("Nov")) {
+            x = 11;
+        } 
+        else if (monw.equals("Dec")) {
+            x = 12;
+        }
+        return x;
+}    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox AMPMList;
     private javax.swing.JTextField CategoryInput;
@@ -170,6 +266,7 @@ public class AddEventDialog extends javax.swing.JDialog {
     private javax.swing.JComboBox MinuteList;
     private javax.swing.JComboBox MonthList;
     private javax.swing.JButton RecurrenceButton;
+    private javax.swing.JButton Save;
     private javax.swing.JTextField YearInput;
     // End of variables declaration//GEN-END:variables
 }

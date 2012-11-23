@@ -15,11 +15,11 @@ import javax.swing.JPanel;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    public JPanel dayPanel;
-    public JPanel weekPanel;
-    public JPanel monthPanel;
-    public JPanel yearPanel;
-    public JPanel toDoPanel;
+    public DayPanel dayPanel;
+    public WeekPanel weekPanel;
+    public MonthPanel monthPanel;
+    public YearPanel yearPanel;
+    public ToDoPanel toDoPanel;
     
     public JPanel currentPanel;
     
@@ -30,7 +30,10 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame(CalendarEx calendar) {
         initComponents();
+        System.out.println("PRINT ME");
         cal = calendar;
+        cal.setMax_id(5);
+        System.out.println(cal.getMax_id());
         dayPanel = new DayPanel(cal);
         weekPanel = new WeekPanel(cal);
         monthPanel = new MonthPanel(cal);
@@ -87,6 +90,11 @@ public class MainFrame extends javax.swing.JFrame {
         AddEventButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 AddEventButtonMouseClicked(evt);
+            }
+        });
+        AddEventButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AddEventButtonActionPerformed(evt);
             }
         });
 
@@ -227,6 +235,7 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.revalidate();
         InternalPanel.repaint();
         currentPanel = dayPanel;
+        dayPanel.RefreshView();
     }//GEN-LAST:event_DayButtonMouseClicked
 
     private void WeekButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WeekButtonMouseClicked
@@ -235,6 +244,7 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.revalidate();
         InternalPanel.repaint();
         currentPanel = weekPanel;
+        weekPanel.RefreshView();
     }//GEN-LAST:event_WeekButtonMouseClicked
 
     private void MonthButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MonthButtonMouseClicked
@@ -243,6 +253,7 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.revalidate();
         InternalPanel.repaint();
         currentPanel = monthPanel;
+        monthPanel.RefreshView();
     }//GEN-LAST:event_MonthButtonMouseClicked
 
     private void YearButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_YearButtonMouseClicked
@@ -251,6 +262,7 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.revalidate();
         InternalPanel.repaint();
         currentPanel = yearPanel;
+        yearPanel.RefreshView();
     }//GEN-LAST:event_YearButtonMouseClicked
 
     private void ToDoButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ToDoButtonMouseClicked
@@ -259,6 +271,7 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.revalidate();
         InternalPanel.repaint();
         currentPanel = toDoPanel;
+        toDoPanel.RefreshView();
     }//GEN-LAST:event_ToDoButtonMouseClicked
 
     private void TodayButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TodayButtonMouseClicked
@@ -269,6 +282,31 @@ public class MainFrame extends javax.swing.JFrame {
         //display AddEventDialog
     }//GEN-LAST:event_AddEventButtonMouseClicked
 
+    private void AddEventButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddEventButtonActionPerformed
+        AddEventDialog addEvent = new AddEventDialog();
+        AddEventDialog.run(cal, this);
+        addEvent.setCal(cal);
+    }//GEN-LAST:event_AddEventButtonActionPerformed
+
+    public void RefreshView(){
+        
+        if(currentPanel.getClass().equals(dayPanel.getClass())){
+            dayPanel.RefreshView();
+        }
+        else if (currentPanel.getClass().equals(weekPanel.getClass())){
+            weekPanel.RefreshView();
+        }
+        else if (currentPanel.getClass().equals(monthPanel.getClass())){
+            monthPanel.RefreshView();
+        }
+        else if (currentPanel.getClass().equals(yearPanel.getClass())){
+            yearPanel.RefreshView();
+        }
+        else if (toDoPanel.getClass().equals(toDoPanel.getClass())){
+            monthPanel.RefreshView();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

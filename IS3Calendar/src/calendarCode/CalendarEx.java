@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
 
 public class CalendarEx {
 
@@ -18,6 +19,7 @@ public class CalendarEx {
 	List<Appointment> appList;          // List implemented as growable array
 	long max_id = 0; // maximum appointment id in the calendar. Used 
 					 // when adding a new appointment
+        static Calendar dates = Calendar.getInstance();
 	
 	 public CalendarEx()
 	    {
@@ -229,6 +231,24 @@ public class CalendarEx {
 		 
 		 return null;
 	 }
+
+    public long getMax_id() {
+        return max_id;
+    }
+
+    public void setMax_id(long max_id) {
+        this.max_id = max_id;
+    }
+    
+    public static int getCurrentDay() {
+        return dates.get(Calendar.DATE);
+    }
+    public static int getCurrentMonth() {
+        return dates.get(Calendar.MONTH) + 1;
+    }
+    public static int getCurrentYear() {
+        return dates.get(Calendar.YEAR);
+    }
 	
 	
 }

@@ -8,14 +8,18 @@ import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import java.util.List;
+import java.util.Calendar;
+import java.util.Collections;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Dan
  */
-public class DayPanel extends javax.swing.JPanel {
+public final class DayPanel extends javax.swing.JPanel {
 
     private CalendarEx cal;
+    private CalendarDate day;
     
     /**
      * Creates new form DayPanel
@@ -23,6 +27,40 @@ public class DayPanel extends javax.swing.JPanel {
     public DayPanel(CalendarEx calendar) {
         initComponents();
         cal = calendar;
+        day = new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        ListAppointMents();
+        DayLabel.setText(day.toString());
+    }
+    
+    public void RefreshView(){
+        ListAppointMents();
+        DayLabel.setText(day.toString());
+    }
+    
+    public void ListAppointMents(){
+        List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, day);
+        Collections.sort(appointments);
+        String data[][] = new String[24][2];
+        for (int i = 0; i < appointments.size(); i++) {
+            String hr = Integer.toString(appointments.get(i).start_time.hr);
+            String min = Integer.toString(appointments.get(i).start_time.min);
+            if (appointments.get(i).start_time.hr < 10) hr = "0" + hr;
+            if (appointments.get(i).start_time.min < 10) hr = "0" + min;
+            data[i][0] = hr + ":" + min;
+            data[i][1] = appointments.get(i).description;
+        }
+        
+        
+        jTable1.setModel(
+            new DefaultTableModel(data, new String [] {"Time", "Event"}) {
+            Class[] types = new Class[] {String.class,String.class}; 
+            boolean[] canEdit = new boolean[] {false, false};
+            @Override
+            public Class getColumnClass(int columnIndex){ return types [columnIndex];}
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex){ return canEdit [columnIndex];}
+        });
+        
     }
 
     /**
