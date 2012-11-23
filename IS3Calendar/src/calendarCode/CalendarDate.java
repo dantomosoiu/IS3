@@ -91,7 +91,7 @@ public class CalendarDate {
                     return -1;
             }
         }
-        
+
         int d_val = no_days;
 
         return y_val + m_val + d_val;
@@ -203,18 +203,21 @@ public class CalendarDate {
             return new CalendarDate(d.day, 12, d.year - 1);
         }
     }
-    
+
     public static boolean isLeap(int year) {
-        if ( ((year%4 ==0) && (year%100!=0)) || ((year%100==0)&&(year%400==0)) ) return true;
-        else return false;
+        if (((year % 4 == 0) && (year % 100 != 0)) || ((year % 100 == 0) && (year % 400 == 0))) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
-    public static int getDaysOfMonth(int month, int year){
-        switch(month){
+
+    public static int getDaysOfMonth(int month, int year) {
+        switch (month) {
             case 1:
                 return 31;
             case 2:
-                if(isLeap(year)){
+                if (isLeap(year)) {
                     return 29;
                 }
                 return 28;
@@ -242,5 +245,30 @@ public class CalendarDate {
                 return -1;
         }
     }
-    
+
+    public static int getDayNumberFromDayName(String day) {
+
+        if(day.toLowerCase().equals("monday")){
+            return 1;
+        }
+        if(day.toLowerCase().equals("tuesday")){
+            return 2;
+        }
+        if(day.toLowerCase().equals("wednesday")){
+            return 3;
+        }
+        if(day.toLowerCase().equals("thursday")){
+            return 4;
+        }
+        if(day.toLowerCase().equals("friday")){
+            return 5;
+        }
+        if(day.toLowerCase().equals("saturday")){
+            return 6;
+        }
+        if(day.toLowerCase().equals("sunday")){
+            return 7;
+        }
+        return -1;
+    }
 }

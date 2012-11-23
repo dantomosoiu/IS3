@@ -4,8 +4,11 @@
  */
 package is3calendar;
 
+import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -16,6 +19,7 @@ public class MonthPanel extends javax.swing.JPanel {
     private CalendarEx cal;
     private CalendarDate startDay;
     private CalendarDate endDay;
+    private int mondayOffset;
 
     /**
      * Creates new form DayPanel
@@ -24,9 +28,56 @@ public class MonthPanel extends javax.swing.JPanel {
         initComponents();
         cal = calendar;
         startEndDay(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+
+        switch (CalendarDate.getDayNumberFromDayName(CalendarDate.getDay(startDay.day, startDay.day, startDay.day))) {
+            case 1:
+                mondayOffset = 0;
+                break;
+            case 2:
+                mondayOffset = 1;
+                break;
+            case 3:
+                mondayOffset = 2;
+                break;
+            case 4:
+                mondayOffset = 3;
+                break;
+            case 5:
+                mondayOffset = 4;
+                break;
+            case 6:
+                mondayOffset = 5;
+                break;
+            case 7:
+                mondayOffset = 6;
+                break;
+            default:
+                break;
+        }
+
+        //ListAppointMents();
+        MonthLabel.setText(CalendarEx.monthToString(startDay.month) + ", " + startDay.year);
     }
 
     public void RefreshView() {
+    }
+
+    public void ListAppointMents() {
+        List<Appointment> appointments = cal.getAppointmentsBetweenDates(startDay, endDay);
+        Collections.sort(appointments);
+        String data[][] = new String[6][7];
+
+        for (int i = 0; i < 24; i++) {
+            for (Appointment a : appointments) {
+                for (int j = 0; j < 7; j++) {
+                    System.out.println(a.date.day);
+                    if (a.date.day == startDay.day + j && a.start_time.hr == i) {
+                        jTable1.getModel().setValueAt(a.description, i, j + 1);
+                        data[i][j + 1] = a.description;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -80,12 +131,12 @@ public class MonthPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(PreviousButton)
-                        .addGap(147, 147, 147)
-                        .addComponent(MonthLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(MonthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(NextButton)))
                 .addContainerGap())
         );
