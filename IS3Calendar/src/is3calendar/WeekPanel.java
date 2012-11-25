@@ -176,6 +176,11 @@ public final class WeekPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    public void SetToday() {
+        startEndDay(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        RefreshView();
+    }
+    
 private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
     CalendarDate d = CalendarDate.moveWeek(-1, startDay);
     startEndDay(d.day, d.month, d.year);

@@ -222,6 +222,11 @@ private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         RefreshView();
 }//GEN-LAST:event_NextButtonActionPerformed
 
+public void SetToday() {
+        startEndDay(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        RefreshView();
+    }
+
     private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {
         CalendarDate day = CalendarDate.moveMonth(-1, startDay);
         startEndDay(day.day, day.month, day.year);

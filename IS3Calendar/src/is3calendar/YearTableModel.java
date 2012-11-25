@@ -26,7 +26,7 @@ public class YearTableModel extends AbstractTableModel {
     public int getColumnCount() { return 4; }
     public String getColumnName(int columnIndex) { return "";}
     @Override
-    public int getRowCount() { return 4; }
+    public int getRowCount() { return 3; }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) { return cell[rowIndex][columnIndex]; }
     @Override

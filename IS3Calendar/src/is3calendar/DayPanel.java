@@ -56,6 +56,11 @@ public final class DayPanel extends javax.swing.JPanel {
             }
         }
     }
+    
+    public void SetToday() {
+        day = new CalendarDate(CalendarEx.getCurrentDay(), CalendarEx.getCurrentMonth(), CalendarEx.getCurrentYear());
+        RefreshView();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

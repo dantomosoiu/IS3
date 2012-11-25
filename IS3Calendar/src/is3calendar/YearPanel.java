@@ -64,32 +64,40 @@ public class YearPanel extends javax.swing.JPanel {
    public void RefreshView() {
         ListAppointMents();
     }
+   
+   public void SetToday() {
+        year = CalendarEx.getCurrentYear();
+        RefreshView();
+    }
 
     public void ListAppointMents() {
-        List<Appointment> appointments = cal.getAppointmentsBetweenDates(new CalendarDate(1,1,year), new CalendarDate(31,12,year));
-        Collections.sort(appointments);
         
         
         
-        int[][] counters = new int[12][42];
+        
+        int[][] numbers = new int[12][42];
+        int[][] busy = new int[12][42];
         int c=0;
         for (int j = 0; j < 12; j++) {
+            List<Appointment> appointments = cal.getAppointmentsBetweenDates(new CalendarDate(1,j+1,year), new CalendarDate(31,j+1,year));
             SetOffset(j);
+            int numDays = CalendarDate.getDaysOfMonth(j+1, year);
             for (int i = mondayOffset+3; i < 42; i++) {
-                counters[j][i] = i-mondayOffset-2;
+                if (i-mondayOffset-3 < numDays) numbers[j][i] = i-mondayOffset-2;
+                for (Appointment a:appointments) if (a.date.day==i-mondayOffset-2) busy[j][i]+=1;
                     c++;
                 
             }
         }
         YearLabel.setText(Integer.toString(year));
-        YearCell[][] data = new YearCell[4][4];
+        YearCell[][] data = new YearCell[3][4];
         int row = 0;
         int col = 0;
         if(col > 3){
                 col = 0;
             }
-        for (int i = 0; i < counters.length; i++) {
-            data[row][col] = new YearCell(counters[col+4*row]);
+        for (int i = 0; i < numbers.length; i++) {
+            data[row][col] = new YearCell(busy[col+4*row], numbers[col+4*row]);
             col++;
             if(col > 3){
                 col = 0;
@@ -132,8 +140,18 @@ public class YearPanel extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
 
         PreviousButton.setText("Previous");
+        PreviousButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PreviousButtonActionPerformed(evt);
+            }
+        });
 
         NextButton.setText("Next");
+        NextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NextButtonActionPerformed(evt);
+            }
+        });
 
         YearLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         YearLabel.setText("YEAR");
@@ -189,6 +207,17 @@ public class YearPanel extends javax.swing.JPanel {
                     .addContainerGap()))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+private void PreviousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviousButtonActionPerformed
+    year -=1;
+    RefreshView();
+}//GEN-LAST:event_PreviousButtonActionPerformed
+
+private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextButtonActionPerformed
+    year +=1;
+    RefreshView();
+}//GEN-LAST:event_NextButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton NextButton;
     private javax.swing.JButton PreviousButton;

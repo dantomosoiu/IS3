@@ -78,7 +78,7 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.setLayout(InternalPanelLayout);
         InternalPanelLayout.setHorizontalGroup(
             InternalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 565, Short.MAX_VALUE)
+            .addGap(0, 588, Short.MAX_VALUE)
         );
         InternalPanelLayout.setVerticalGroup(
             InternalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,6 +138,11 @@ public class MainFrame extends javax.swing.JFrame {
                 TodayButtonMouseClicked(evt);
             }
         });
+        TodayButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TodayButtonActionPerformed(evt);
+            }
+        });
 
         HelpButton.setText("Help");
 
@@ -171,7 +176,7 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(AddEventButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(today)
+                        .addComponent(today, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SettingsButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -190,21 +195,20 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(YearButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ToDoButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TodayButton)))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
+                                .addComponent(TodayButton))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
+                        .addComponent(AllCategoriesButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(WorkButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(UniversityButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SocialButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BirthdaysButton)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(AllCategoriesButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(WorkButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(UniversityButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(SocialButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BirthdaysButton)
-                .addContainerGap(141, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {DayButton, MonthButton, ToDoButton, TodayButton, WeekButton, YearButton});
@@ -302,6 +306,24 @@ public class MainFrame extends javax.swing.JFrame {
     private void todayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_todayActionPerformed
+
+private void TodayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TodayButtonActionPerformed
+    if(currentPanel.getClass().equals(dayPanel.getClass())){
+            dayPanel.SetToday();
+        }
+        else if (currentPanel.getClass().equals(weekPanel.getClass())){
+            weekPanel.SetToday();
+        }
+        else if (currentPanel.getClass().equals(monthPanel.getClass())){
+            monthPanel.SetToday();
+        }
+        else if (currentPanel.getClass().equals(yearPanel.getClass())){
+            yearPanel.SetToday();
+        }
+        else if (toDoPanel.getClass().equals(toDoPanel.getClass())){
+            monthPanel.SetToday();
+        }
+}//GEN-LAST:event_TodayButtonActionPerformed
 
     public void RefreshView(){
         

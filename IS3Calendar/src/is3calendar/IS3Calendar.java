@@ -5,6 +5,7 @@
 package is3calendar;
 
 import calendarCode.CalendarEx;
+import java.io.File;
 
 /**
  *
@@ -18,7 +19,8 @@ public class IS3Calendar {
 
     public IS3Calendar() {
         cal = new CalendarEx();
-        cal.openCalendar("./cal");
+        File f = new File("./cal");
+        if (f.exists()) cal.openCalendar("./cal");
         mainFrame = new MainFrame(cal);
     }
 

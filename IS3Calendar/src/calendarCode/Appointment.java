@@ -13,6 +13,7 @@ public class Appointment implements Comparable<Appointment> {
 
         NONE, DAILY, WEEKLY, TWO_WEEKLY, FOUR_WEEKLY
     };
+    
     public String description; // Description of the appointment
     public String location;    // where it occurs (optional)
     public String category;    // Type of appointment (eg, work, social, uni etc)
