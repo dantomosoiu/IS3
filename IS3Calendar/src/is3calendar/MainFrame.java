@@ -42,6 +42,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         InternalPanel.add(dayPanel);
         currentPanel = dayPanel;
+        TodayButtonActionPerformed(null);
     }
 
     /**
