@@ -5,11 +5,11 @@ public class CalendarDate {
     // class to store a date for use with the calendar
     // NOTE: Only accurate until the next leap year.
     // constants to provide an initial day for the date id
-    private static int FIRST_DAY = 1, FIRST_MONTH = 1, FIRST_YEAR = 2009;
+    private static int FIRST_DAY = 1, FIRST_MONTH = 1, FIRST_YEAR = 1990;
     // day, month and year of the Date
     public int day, month, year;
     // unique id given from the date. Counting from FIRST_DAY, FIRST_MONTH, FIRST_YEAR
-    static int dateID;
+    public int dateID;
 
     public CalendarDate(int the_day, int the_month, int the_year) {
         day = the_day;
@@ -33,8 +33,10 @@ public class CalendarDate {
         // from the date, get the appropriate date ID
         return getDateID(cd.day, cd.month, cd.year);
     }
-    
-    public static int getID() {return dateID;}
+
+    public int getID() {
+        return dateID;
+    }
 
     public static int getDateID(int d, int m, int y) {
         // get the date ID from the day, month and year
@@ -48,50 +50,66 @@ public class CalendarDate {
         int no_days = d - FIRST_DAY;
 
         int y_val = no_years * 365;
-        int m_val = 0;
 
-        if (true) {
-            switch (no_months) {
-                case 0:
-                    m_val = 0;
-                    break;
-                case 1:
-                    m_val = 31;
-                    break;
-                case 2:
-                    m_val = 59;
-                    break;
-                case 3:
-                    m_val = 90;
-                    break;
-                case 4:
-                    m_val = 120;
-                    break;
-                case 5:
-                    m_val = 151;
-                    break;
-                case 6:
-                    m_val = 181;
-                    break;
-                case 7:
-                    m_val = 212;
-                    break;
-                case 8:
-                    m_val = 243;
-                    break;
-                case 9:
-                    m_val = 273;
-                    break;
-                case 10:
-                    m_val = 304;
-                    break;
-                case 11:
-                    m_val = 334;
-                    break;
-
-                default:
-                    return -1;
+        for (int i = FIRST_YEAR; i < no_years + FIRST_YEAR; i++) {
+            if (isLeap(i)) {
+                y_val++;
             }
+        }
+
+        int m_val;
+
+        while (true) {
+            m_val = 1;
+            if (no_months == 0) {
+                break;
+            }
+            m_val += 31;
+            if (no_months == 1) {
+                break;
+            }
+            m_val += getDaysOfMonth(2, y);
+            if (no_months == 2) {
+                break;
+            }
+            m_val += 31;
+            if (no_months == 3) {
+                break;
+            }
+            m_val += 30;
+            if (no_months == 4) {
+                break;
+            }
+            m_val += 31;
+            if (no_months == 5) {
+                break;
+            }
+            m_val += 30;
+            if (no_months == 6) {
+                break;
+            }
+            m_val += 31;
+            if (no_months == 7) {
+                break;
+            }
+            m_val += 31;
+            if (no_months == 8) {
+                break;
+            }
+            m_val += 30;
+            if (no_months == 9) {
+                break;
+            }
+            m_val += 31;
+            if (no_months == 10) {
+                break;
+            }
+            m_val += 30;
+            if (no_months == 11) {
+                break;
+            }
+            m_val += 31;
+            break;
         }
 
         int d_val = no_days;
@@ -105,54 +123,51 @@ public class CalendarDate {
             return null;
         }
 
-        int no_years = id / 365;
-        int no_months = 0;
-        int no_days = 0;
+        int dayCounter = id;
+        int yearCounter = FIRST_YEAR;
 
-        int rem_month_id = id - (no_years * 365);
-
-        if (rem_month_id < 31) {
-            no_months = 1;
-            no_days = 1 + rem_month_id;
-        } else if (rem_month_id < 59) {
-            no_months = 2;
-            no_days = rem_month_id - 30;
-        } else if (rem_month_id < 90) {
-            no_months = 3;
-            no_days = rem_month_id - 58;
-        } else if (rem_month_id < 120) {
-            no_months = 4;
-            no_days = rem_month_id - 89;
-        } else if (rem_month_id < 151) {
-            no_months = 5;
-            no_days = rem_month_id - 119;
-        } else if (rem_month_id < 181) {
-            no_months = 6;
-            no_days = rem_month_id - 150;
-        } else if (rem_month_id < 181) {
-            no_months = 6;
-            no_days = rem_month_id - 150;
-        } else if (rem_month_id < 212) {
-            no_months = 7;
-            no_days = rem_month_id - 180;
-        } else if (rem_month_id < 243) {
-            no_months = 8;
-            no_days = rem_month_id - 211;
-        } else if (rem_month_id < 273) {
-            no_months = 9;
-            no_days = rem_month_id - 242;
-        } else if (rem_month_id < 304) {
-            no_months = 10;
-            no_days = rem_month_id - 272;
-        } else if (rem_month_id < 334) {
-            no_months = 11;
-            no_days = rem_month_id - 303;
+        int yearDays;
+        if (isLeap(FIRST_YEAR)) {
+            yearDays = 366;
         } else {
-            no_months = 12;
-            no_days = rem_month_id - 333;
+            yearDays = 365;
         }
 
-        return new CalendarDate(no_days, no_months, no_years + FIRST_YEAR);
+        while (dayCounter > yearDays) {
+            dayCounter -= yearDays;
+
+            yearCounter++;
+            if (isLeap(yearCounter)) {
+                yearDays = 366;
+            } else {
+                yearDays = 365;
+            }
+        }
+        
+        int no_years = yearCounter;
+        int no_months;
+        int no_days;
+
+        int curPassedDays = 31;
+
+        while (true) {
+            no_months = 1;
+            if (dayCounter <= curPassedDays) { //dayCounter is in January
+                no_days = dayCounter;
+                break;
+            }
+            while (true) {
+                no_months++;
+                if (dayCounter <= curPassedDays + getDaysOfMonth(no_months, no_years)) { //dayCounter is in current month
+                    no_days = dayCounter - curPassedDays;
+                    break;
+                }
+                curPassedDays += getDaysOfMonth(no_months, no_years); //adding no of days or month to currPassedDays
+            }
+            break;
+        }
+
+        return new CalendarDate(no_days, no_months, no_years);
 
     }
 
@@ -161,26 +176,28 @@ public class CalendarDate {
 
         int the_id = getDateID(d, m, y);
 
+
         switch (the_id % 7) {
-            case 0:
-                return "Thursday";
             case 1:
-                return "Friday";
-            case 2:
-                return "Saturday";
-            case 3:
-                return "Sunday";
-            case 4:
                 return "Monday";
-            case 5:
+            case 2:
                 return "Tuesday";
-            case 6:
+            case 3:
                 return "Wednesday";
+            case 4:
+                return "Thursday";
+            case 5:
+                return "Friday";
+            case 6:
+                return "Saturday";
+            case 0:
+                return "Sunday";
             default:
                 return "ANYDAY";
         }
     }
 
+    @Override
     public String toString() {
         // turn the CalendarDate object into a string
 
@@ -197,14 +214,15 @@ public class CalendarDate {
     }
 
     public static CalendarDate moveMonth(int i, CalendarDate d) {
-        if ((d.month + i)%12 > 0 && (d.month+i)<13) {
+        if ((d.month + i) % 12 > 0 && (d.month + i) < 13) {
             return new CalendarDate(d.day, (d.month + i) % 12, d.year);
-        } else if ((d.month + i)%12 > 0) {
-            return new CalendarDate(d.day, 1, d.year+1);
-        } else if ((d.month + i)<1) {
+        } else if ((d.month + i) % 12 > 0) {
+            return new CalendarDate(d.day, 1, d.year + 1);
+        } else if ((d.month + i) < 1) {
             return new CalendarDate(d.day, 12, d.year - 1);
+        } else {
+            return new CalendarDate(d.day, (12), d.year);
         }
-        else return new CalendarDate(d.day, (12), d.year);
     }
 
     public static boolean isLeap(int year) {
@@ -251,25 +269,25 @@ public class CalendarDate {
 
     public static int getDayNumberFromDayName(String day) {
 
-        if(day.toLowerCase().equals("monday")){
+        if (day.toLowerCase().equals("monday")) {
             return 1;
         }
-        if(day.toLowerCase().equals("tuesday")){
+        if (day.toLowerCase().equals("tuesday")) {
             return 2;
         }
-        if(day.toLowerCase().equals("wednesday")){
+        if (day.toLowerCase().equals("wednesday")) {
             return 3;
         }
-        if(day.toLowerCase().equals("thursday")){
+        if (day.toLowerCase().equals("thursday")) {
             return 4;
         }
-        if(day.toLowerCase().equals("friday")){
+        if (day.toLowerCase().equals("friday")) {
             return 5;
         }
-        if(day.toLowerCase().equals("saturday")){
+        if (day.toLowerCase().equals("saturday")) {
             return 6;
         }
-        if(day.toLowerCase().equals("sunday")){
+        if (day.toLowerCase().equals("sunday")) {
             return 7;
         }
         return -1;
