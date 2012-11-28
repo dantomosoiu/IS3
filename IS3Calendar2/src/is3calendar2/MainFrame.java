@@ -30,21 +30,22 @@ import javax.swing.JPanel;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private CalendarEx cal;
-    private CalendarDate curDay;
-    private JPanel currentPanel;
-    private DayPanel dayPanel;
-    private WeekPanel weekPanel;
-    private MonthPanel monthPanel;
-    private YearPanel yearPanel;
-    private int category;
-    public ToDoPanel toDoPanel;
+    private CalendarEx cal; //Calendar Item
+    private CalendarDate curDay; //Represents the day being viewed by the user
+    private JPanel currentPanel; //A holder for the different views
+    private DayPanel dayPanel; // The Day View
+    private WeekPanel weekPanel; // The Week View
+    private MonthPanel monthPanel; // The Month View
+    private YearPanel yearPanel; // The Year View
+    private int category; // integer representation of selected category
+    public ToDoPanel toDoPanel; // The To-Do View
 
     /** Creates new form Mainframe */
     public MainFrame() {
-        initComponents();
+        initComponents(); //Generates code for items created in Design View
         
-        Toolkit kit = this.getToolkit();
+        //Finds the size of the screen and item. Uses this to calculate how to position the frame in the center of the screen.
+        Toolkit kit = this.getToolkit(); 
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices();
         Insets in = kit.getScreenInsets(gs[0].getDefaultConfiguration());
@@ -54,23 +55,24 @@ public class MainFrame extends javax.swing.JFrame {
         this.setSize(Math.min(max_width, 850), Math.min(max_height, 550));//whatever size you want but smaller the insets
         this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight() ) / 2);        
         
-        category = 0;
-        catButtonPanel.add(new CategoriesButtons(this));
-        catButtonPanel.setLayout(new GridBagLayout());
-        cal = new CalendarEx();
-        File f = new File("./cal");
-        if (f.exists()) cal.openCalendar("./cal");
-        curDay = CalendarEx.getToday();
-        todayLabel.setText(curDay.toString());
+        category = 0;//Sets the catergory to all
+        catButtonPanel.add(new CategoriesButtons(this));//Adds category buttons. Having their own panel would make it easier to implement User added categoried in future
+        catButtonPanel.setLayout(new GridBagLayout());//uses a layout that will centralise the buttons
+        cal = new CalendarEx();//creates a new calendar
+        File f = new File("./cal");//if a calendar file is present
+        if (f.exists()) cal.openCalendar("./cal");//loads it
+        curDay = CalendarEx.getToday();//starts the program showing today
+        todayLabel.setText(curDay.toString());//sets the label at the top of the frame
 
-        dayPanel = new DayPanel(this, cal, curDay);
-        weekPanel = new WeekPanel(this, cal, curDay);
-        monthPanel = new MonthPanel(this, cal, curDay);
-        yearPanel = new YearPanel(this, cal, curDay);
-        toDoPanel = new ToDoPanel(this, cal);
+        dayPanel = new DayPanel(this, cal, curDay);//creates a new Day Panel
+        weekPanel = new WeekPanel(this, cal, curDay);//creates a new Week Panel
+        monthPanel = new MonthPanel(this, cal, curDay);//creates a new Month Panel
+        yearPanel = new YearPanel(this, cal, curDay);//creates a new Year Panel
+        toDoPanel = new ToDoPanel(this, cal);//creates a new ToDo Panel
 
         InternalPanel.setLayout(new java.awt.BorderLayout());
 
+        //Opens in Day View
         InternalPanel.add(dayPanel);
         currentPanel = dayPanel;
 
@@ -249,14 +251,15 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void addEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEventActionPerformed
-    AddEventDialog addEventPanel = new AddEventDialog();
+    //When the Add Event Button Is Pushed, opens the add event dialogue
     AddEventDialog.run(cal, this);
-    addEventPanel.setCal(cal);
 }//GEN-LAST:event_addEventActionPerformed
 
+//Public methods to allow the views to change view
 public void dayRepaint() {dayButtonActionPerformed(null);}
 public void monthRepaint() {monthButtonActionPerformed(null);}
 
+//sets the day panel as current, and makes sure its table is up to date
 private void dayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayButtonActionPerformed
     curDay = getCurrentDate();
     InternalPanel.remove(currentPanel);
@@ -268,6 +271,7 @@ private void dayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     dayPanel.populateTable();
 }//GEN-LAST:event_dayButtonActionPerformed
 
+//sets the week panel as current, and makes sure its table is up to date
 private void weekButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_weekButtonActionPerformed
     curDay = getCurrentDate();
     InternalPanel.remove(currentPanel);
@@ -279,6 +283,7 @@ private void weekButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     weekPanel.populateTable();
 }//GEN-LAST:event_weekButtonActionPerformed
 
+//sets the month panel as current, and makes sure its table is up to date
 private void monthButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthButtonActionPerformed
     curDay = getCurrentDate();
     InternalPanel.remove(currentPanel);
@@ -290,6 +295,7 @@ private void monthButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     monthPanel.populateTable();
 }//GEN-LAST:event_monthButtonActionPerformed
 
+//sets the year panel as current, and makes sure its table is up to date
 private void yearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearButtonActionPerformed
     curDay = getCurrentDate();
     InternalPanel.remove(currentPanel);
@@ -301,6 +307,7 @@ private void yearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     yearPanel.populateTable();
 }//GEN-LAST:event_yearButtonActionPerformed
 
+//sets the view day to today
 private void todayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todayButtonActionPerformed
     dayPanel.setCurrentDate(CalendarEx.getToday());
     weekPanel.setCurrentDate(CalendarEx.getToday());
@@ -309,6 +316,7 @@ private void todayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     RefreshView();
 }//GEN-LAST:event_todayButtonActionPerformed
 
+//sets the todo panel as current, and makes sure its table is up to date
 private void toDoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toDoButtonActionPerformed
     curDay = getCurrentDate();
     InternalPanel.remove(currentPanel);
@@ -319,6 +327,7 @@ private void toDoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     toDoPanel.populateTable();
 }//GEN-LAST:event_toDoButtonActionPerformed
 
+//Launches the help dialogue
 private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpActionPerformed
     HelpDialog.run();
 }//GEN-LAST:event_helpActionPerformed
@@ -359,7 +368,8 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             }
         });
     }
-
+    
+    //checks which panel is current, and refreshes its table
     public void RefreshView() {
         if (currentPanel.getClass().equals(dayPanel.getClass())) {
             dayPanel.populateTable();
@@ -374,6 +384,7 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
         toDoPanel.populateTable();
         }
     }
+    //returns the current Date from the current panel
     private CalendarDate getCurrentDate() {
          if (currentPanel.getClass().equals(dayPanel.getClass())) {
             return dayPanel.getCurrentDate();
@@ -386,18 +397,20 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
         }
         else return curDay;
     }
+    //sets the category in the panels
     public void setCategory(int c) {
         category = c;
+        toDoPanel.setCategory(c); dayPanel.setCategory(c); weekPanel.setCategory(c); yearPanel.setCategory(c); monthPanel.setCategory(c);
          if (currentPanel.getClass().equals(dayPanel.getClass())) {
-            dayPanel.setCategory(c); dayPanel.populateTable();
+            dayPanel.populateTable();
         } else if (currentPanel.getClass().equals(weekPanel.getClass())) {
-            weekPanel.setCategory(c); weekPanel.populateTable();
+            weekPanel.populateTable();
         } else if (currentPanel.getClass().equals(monthPanel.getClass())) {
-            monthPanel.setCategory(c); monthPanel.populateTable();
+            monthPanel.populateTable();
         } else if (currentPanel.getClass().equals(yearPanel.getClass())) {
-            yearPanel.setCategory(c); yearPanel.populateTable();
+            yearPanel.populateTable();
         } else if (currentPanel.getClass().equals(toDoPanel.getClass())) {
-            toDoPanel.setCategory(c); toDoPanel.populateTable();
+            toDoPanel.populateTable();
         }
     }
 
