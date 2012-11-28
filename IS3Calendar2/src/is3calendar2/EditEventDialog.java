@@ -4,6 +4,7 @@
  */
 package is3calendar2;
 
+import assortedComponents.ConfirmDelete;
 import calendarCode.Appointment;
 import calendarCode.Appointment.Recurrence;
 import calendarCode.CalendarDate;
@@ -21,8 +22,7 @@ import javax.swing.JTextField;
 public class EditEventDialog extends javax.swing.JDialog {
 
     private CalendarEx cal;
-    private Appointment app;
-    private JTextField in;    
+    private Appointment app;  
     /**
      * Creates new form AddEventDialog
      */
@@ -219,9 +219,8 @@ public class EditEventDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_AMPMListActionPerformed
 
 private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
-     cal.removeAppointment(app);
-     cal.saveCalendar("./cal");
-     this.dispose();
+
+     ConfirmDelete.run(app, cal, this);
 }//GEN-LAST:event_RemoveActionPerformed
 
     /**
