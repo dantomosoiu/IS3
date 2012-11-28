@@ -94,7 +94,6 @@ public class YearPanel extends javax.swing.JPanel {
             int offset = getOffset(j+1);
             for (i=0;i<offset;i++) {busy[i] = 0; numbers[i] = 0; }
             if (i!=0) i -= 1;
-            else i += 6;
             for (; i < CalendarDate.getDaysOfMonth(j+1, year)+offset; i++) {List<Appointment> appointments = cal.getAppointmentsBetweenDates(new CalendarDate(i-offset+1, j+1, year), new CalendarDate(i-offset+1, j+1, year));if (category != 0) { List<Appointment> appointments2 = new ArrayList<Appointment>(); for (Appointment a : appointments)if (a.category == category) appointments2.add(a); appointments = appointments2;}; busy[i] = appointments.size(); numbers[i] = i-offset+1;}
             for (;i<42;i++) {busy[i] = 0; numbers[i] = 0; }
             
