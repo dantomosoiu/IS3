@@ -50,11 +50,8 @@ public class DayPanel extends javax.swing.JPanel {
                     String event = dayTable.getValueAt(selectedRow, 1).toString();
                     Appointment a = findEvent(time, event);
                     if (a != null) {
-                        EditEventDialog edit = new EditEventDialog();
-                        EditEventDialog.run(a, cal);
-                        edit.setApp(a, cal);
+                        EditEventDialog.run(mainF, a, cal);
                     }
-
                 }
             }
         });
@@ -70,9 +67,7 @@ public class DayPanel extends javax.swing.JPanel {
                     String event = dayTable.getValueAt(selectedRow, 1).toString();
                     Appointment a = findEvent(time, event);
                     if (a != null) {
-                        //ConfirmDelete edit = new ConfirmDelete();
-                        ConfirmDelete.run(a, cal, null);
-                        //edit.setApp(a, cal);
+                        ConfirmDelete.run(mainF, a, cal, null);
                     }
                 }
             }     

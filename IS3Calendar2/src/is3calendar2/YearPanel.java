@@ -31,13 +31,26 @@ public class YearPanel extends javax.swing.JPanel {
     private int year;
     private CalendarDate currentDay;
     private int category;
+    MainFrame mainF;
 
     /** Creates new form DayPanel */
-    public YearPanel(CalendarEx calendar, CalendarDate curDay) {
+    public YearPanel(MainFrame mf, CalendarEx calendar, CalendarDate curDay) {
         initComponents();
         cal = calendar;
         currentDay = curDay;
+        mainF = mf;
         setupTable();
+        
+        yearTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedCol = yearTable.getSelectedColumn();
+                    int selectedRow = yearTable.getSelectedRow();
+                    currentDay = new CalendarDate(currentDay.day, 4*selectedRow+selectedCol+1, currentDay.year);
+                    mainF.monthRepaint();
+                }
+            }
+        });
     }
     
     

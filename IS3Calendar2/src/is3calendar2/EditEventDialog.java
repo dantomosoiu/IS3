@@ -22,15 +22,17 @@ import javax.swing.JTextField;
 public class EditEventDialog extends javax.swing.JDialog {
 
     private CalendarEx cal;
-    private Appointment app;  
+    private Appointment app; 
+    private MainFrame mainF;
     /**
      * Creates new form AddEventDialog
      */
-    public EditEventDialog(java.awt.Frame parent, boolean modal, Appointment a, CalendarEx calendar, MainFrame mainFrame) {
+    public EditEventDialog(java.awt.Frame parent, boolean modal, MainFrame mf, Appointment a, CalendarEx calendar, MainFrame mainFrame) {
         super(parent, modal);
         
         cal = calendar;
         app = a;
+        mainF = mf;
         initComponents();
     }
 
@@ -220,13 +222,13 @@ public class EditEventDialog extends javax.swing.JDialog {
 
 private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
 
-     ConfirmDelete.run(app, cal, this);
+     ConfirmDelete.run(mainF, app, cal, this);
 }//GEN-LAST:event_RemoveActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void run(final Appointment a, final CalendarEx calendar) {
+    public static void run(final MainFrame mf, final Appointment a, final CalendarEx calendar) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -253,7 +255,7 @@ private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                EditEventDialog dialog = new EditEventDialog(new javax.swing.JFrame(), true, a, calendar, null);
+                EditEventDialog dialog = new EditEventDialog(new javax.swing.JFrame(), true, mf, a, calendar, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

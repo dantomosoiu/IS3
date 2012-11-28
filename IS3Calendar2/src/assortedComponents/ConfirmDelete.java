@@ -13,6 +13,7 @@ package assortedComponents;
 import calendarCode.Appointment;
 import calendarCode.CalendarEx;
 import is3calendar2.EditEventDialog;
+import is3calendar2.MainFrame;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,13 +28,15 @@ public class ConfirmDelete extends javax.swing.JDialog {
     private CalendarEx cal;
     private Appointment app; 
     private EditEventDialog di;
+    private MainFrame mainF;
     /** Creates new form ConfirmDelete */
-    public ConfirmDelete(java.awt.Frame parent, boolean modal, CalendarEx c, Appointment a, EditEventDialog d) {
+    public ConfirmDelete(java.awt.Frame parent, boolean modal, MainFrame mf, CalendarEx c, Appointment a, EditEventDialog d) {
         super(parent, modal);
         initComponents();
         cal = c;
         app = a;
         di = d;
+        mainF = mf;
     }
     public ConfirmDelete(){}
     
@@ -117,7 +120,7 @@ private void yesButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     /**
      * @param args the command line arguments
      */
-     public static void run(final Appointment a, final CalendarEx calendar, final EditEventDialog d) {
+     public static void run(final MainFrame mf, final Appointment a, final CalendarEx calendar, final EditEventDialog d) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -144,7 +147,7 @@ private void yesButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ConfirmDelete dialog = new ConfirmDelete(new javax.swing.JFrame(), true, calendar, a, d);
+                ConfirmDelete dialog = new ConfirmDelete(new javax.swing.JFrame(), true, mf, calendar, a, d);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

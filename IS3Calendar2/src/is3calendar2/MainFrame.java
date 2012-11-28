@@ -47,9 +47,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         dayPanel = new DayPanel(this, cal, curDay);
         weekPanel = new WeekPanel(this, cal, curDay);
-        monthPanel = new MonthPanel(cal, curDay);
-        yearPanel = new YearPanel(cal, curDay);
-        toDoPanel = new ToDoPanel(cal, curDay);
+        monthPanel = new MonthPanel(this, cal, curDay);
+        yearPanel = new YearPanel(this, cal, curDay);
+        toDoPanel = new ToDoPanel(this, cal);
 
         InternalPanel.setLayout(new java.awt.BorderLayout());
 
@@ -232,6 +232,7 @@ private void addEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_addEventActionPerformed
 
 public void dayRepaint() {dayButtonActionPerformed(null);}
+public void monthRepaint() {monthButtonActionPerformed(null);}
 
 private void dayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayButtonActionPerformed
     curDay = getCurrentDate();
@@ -292,7 +293,6 @@ private void toDoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     InternalPanel.revalidate();
     InternalPanel.repaint();
     currentPanel = toDoPanel;
-    toDoPanel.setCurrentDate(curDay);
     toDoPanel.populateTable();
 }//GEN-LAST:event_toDoButtonActionPerformed
 

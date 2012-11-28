@@ -42,6 +42,7 @@ public class MonthCell extends javax.swing.JPanel {
     public void SetEvNum(int i) {
         numEvents.setText(Integer.toString(i));
     }
+    public int getDay() { if (!dayNum.getText().equals("")) return Integer.parseInt(dayNum.getText()); else return 0;}
     
     
     @SuppressWarnings("unchecked")

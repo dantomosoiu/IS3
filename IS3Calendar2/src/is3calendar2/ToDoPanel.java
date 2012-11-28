@@ -30,15 +30,17 @@ public class ToDoPanel extends javax.swing.JPanel {
     CalendarEx cal;
     CalendarDate day;
     int category;
+    MainFrame mainF;
     
 
     /** Creates new form DayPanel */
-    public ToDoPanel(CalendarEx calendar, CalendarDate curDate) {
+    public ToDoPanel(MainFrame mf, CalendarEx calendar) {
         initComponents();
         cal = calendar;
-        day=curDate;
+        day=CalendarEx.getToday();
         category = 0;
         populateTable();
+        mainF = mf;
         
         
         toDoTable.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -51,7 +53,7 @@ public class ToDoPanel extends javax.swing.JPanel {
                     Appointment a = findEvent(date, time, event);
                     if (a != null) {
                         EditEventDialog edit = new EditEventDialog();
-                        EditEventDialog.run(a, cal);
+                        EditEventDialog.run(mainF, a, cal);
                         edit.setApp(a, cal);
                     }
                 }
@@ -71,9 +73,7 @@ public class ToDoPanel extends javax.swing.JPanel {
                     String event = toDoTable.getValueAt(selectedRow, 2).toString();
                     Appointment a = findEvent(date, time, event);
                     if (a != null) {
-                        //ConfirmDelete edit = new ConfirmDelete();
-                        ConfirmDelete.run(a, cal, null);
-                        //edit.setApp(a, cal);
+                        ConfirmDelete.run(mainF, a, cal, null);
                     }
                 }
             }     
@@ -123,8 +123,6 @@ public class ToDoPanel extends javax.swing.JPanel {
         }
         toDoTable.setShowGrid(true);
     }
-    public CalendarDate getCurrentDate() { return day; }
-    public void setCurrentDate(CalendarDate d) {day = d;}
 
     /** This method is called from within the constructor to
      * initialize the form.

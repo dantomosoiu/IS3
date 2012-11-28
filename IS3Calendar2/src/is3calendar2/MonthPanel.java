@@ -35,13 +35,26 @@ public class MonthPanel extends javax.swing.JPanel {
     private CalendarDate startDay;
     private int mondayOffset;
     private int category;
+    private MainFrame mainF;
     
     /** Creates new form DayPanel */
-    public MonthPanel(CalendarEx calendar, CalendarDate day) {
+    public MonthPanel(MainFrame mf, CalendarEx calendar, CalendarDate day) {
         initComponents();
         cal = calendar;
         currentDay = day;
         setupTable();
+        mainF = mf;
+        
+        monthTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedCol = monthTable.getSelectedColumn();
+                    int selectedRow = monthTable.getSelectedRow();
+                    MonthCell cell = (MonthCell)monthTable.getValueAt(selectedRow, selectedCol);
+                    if (cell.getDay()>0) {currentDay = new CalendarDate(cell.getDay(), currentDay.month, currentDay.year); mainF.dayRepaint();}
+                }
+            }
+        });
     }
     
     public void setCategory(int i) {
