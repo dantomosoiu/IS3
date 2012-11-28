@@ -110,7 +110,7 @@ private void noButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 private void yesButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yesButActionPerformed
     cal.removeAppointment(app);
     cal.saveCalendar("./cal");
-    di.dispose();
+    if (di != null) di.dispose();
     this.dispose();
 }//GEN-LAST:event_yesButActionPerformed
 

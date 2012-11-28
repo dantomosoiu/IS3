@@ -10,9 +10,12 @@
  */
 package is3calendar2;
 
+import assortedComponents.ConfirmDelete;
 import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,21 +42,43 @@ public class DayPanel extends javax.swing.JPanel {
         category = 0;
         populateTable();
         mainF = mf;
-        
         dayTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                int selectedRow = dayTable.getSelectedRow();
-                String time = dayTable.getValueAt(selectedRow, 0).toString();
-                String event = dayTable.getValueAt(selectedRow, 1).toString();
-                Appointment a = findEvent(time, event);
-                if (a != null) {
-                    EditEventDialog edit = new EditEventDialog();
-                    EditEventDialog.run(a, cal);
-                    edit.setApp(a, cal);
+                if (e.getClickCount() == 2) {
+                    int selectedRow = dayTable.getSelectedRow();
+                    String time = dayTable.getValueAt(selectedRow, 0).toString();
+                    String event = dayTable.getValueAt(selectedRow, 1).toString();
+                    Appointment a = findEvent(time, event);
+                    if (a != null) {
+                        EditEventDialog edit = new EditEventDialog();
+                        EditEventDialog.run(a, cal);
+                        edit.setApp(a, cal);
+                    }
+
                 }
             }
         });
-   
+
+        class DeleteKeyAdapter extends KeyAdapter {
+        /** Handle for the KeyListener interface 
+        * key control for movement */
+        public void keyPressed(KeyEvent ke) {  
+                int kc = ke.getKeyCode();
+                if (kc == ke.VK_DELETE) {     
+                    int selectedRow = dayTable.getSelectedRow();
+                    String time = dayTable.getValueAt(selectedRow, 0).toString();
+                    String event = dayTable.getValueAt(selectedRow, 1).toString();
+                    Appointment a = findEvent(time, event);
+                    if (a != null) {
+                        //ConfirmDelete edit = new ConfirmDelete();
+                        ConfirmDelete.run(a, cal, null);
+                        //edit.setApp(a, cal);
+                    }
+                }
+            }     
+        }
+        dayTable.addKeyListener(new DeleteKeyAdapter());
+        
     }
     
     private Appointment findEvent(String t, String eN) {
