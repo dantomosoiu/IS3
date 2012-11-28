@@ -28,13 +28,27 @@ public class WeekPanel extends javax.swing.JPanel {
     private CalendarDate startDay;
     private CalendarDate endDay;
     private int category;
+    private MainFrame mainF;
 
     /** Creates new form DayPanel */
-    public WeekPanel(CalendarEx calendar, CalendarDate curDay) {
+    public WeekPanel(MainFrame mf, CalendarEx calendar, CalendarDate curDay) {
         initComponents();
         cal=calendar;
         day=curDay;
         populateTable();
+        mainF = mf;
+        
+        weekTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedCol = weekTable.getSelectedColumn();
+                    if (selectedCol != 0) {
+                        day = CalendarDate.moveDay(selectedCol-1, startDay);
+                        mainF.dayRepaint();
+                    }
+                }
+            }
+        });
     }
     
     public void setCategory(int i) {

@@ -46,7 +46,7 @@ public class MainFrame extends javax.swing.JFrame {
         todayLabel.setText(curDay.toString());
 
         dayPanel = new DayPanel(this, cal, curDay);
-        weekPanel = new WeekPanel(cal, curDay);
+        weekPanel = new WeekPanel(this, cal, curDay);
         monthPanel = new MonthPanel(cal, curDay);
         yearPanel = new YearPanel(cal, curDay);
         toDoPanel = new ToDoPanel(cal, curDay);
