@@ -6,14 +6,16 @@ package is3calendar2;
 
 import assortedComponents.ConfirmDelete;
 import calendarCode.Appointment;
-import calendarCode.Appointment.Recurrence;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import calendarCode.CalendarTime;
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 /**
  *
@@ -34,6 +36,15 @@ public class EditEventDialog extends javax.swing.JDialog {
         app = a;
         mainF = mf;
         initComponents();
+        
+        Toolkit kit = this.getToolkit();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+        Insets in = kit.getScreenInsets(gs[0].getDefaultConfiguration());
+        Dimension d = kit.getScreenSize();
+        int max_width = (d.width - in.left - in.right);
+        int max_height = (d.height - in.top - in.bottom);
+        this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight() ) / 2);        
     }
 
     public void setApp(Appointment a, CalendarEx c) {

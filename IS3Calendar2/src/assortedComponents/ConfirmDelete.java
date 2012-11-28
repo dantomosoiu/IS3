@@ -14,6 +14,11 @@ import calendarCode.Appointment;
 import calendarCode.CalendarEx;
 import is3calendar2.EditEventDialog;
 import is3calendar2.MainFrame;
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,12 +35,21 @@ public class ConfirmDelete extends javax.swing.JDialog {
     private EditEventDialog di;
     private MainFrame mainF;
     /** Creates new form ConfirmDelete */
-    public ConfirmDelete(java.awt.Frame parent, boolean modal, MainFrame mf, CalendarEx c, Appointment a, EditEventDialog d) {
+    public ConfirmDelete(java.awt.Frame parent, boolean modal, MainFrame mf, CalendarEx c, Appointment a, EditEventDialog di) {
         super(parent, modal);
         initComponents();
+        Toolkit kit = this.getToolkit();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+        Insets in = kit.getScreenInsets(gs[0].getDefaultConfiguration());
+        Dimension d = kit.getScreenSize();
+        int max_width = (d.width - in.left - in.right);
+        int max_height = (d.height - in.top - in.bottom);
+        this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight() ) / 2);        
+        
         cal = c;
         app = a;
-        di = d;
+        this.di = di;
         mainF = mf;
     }
     public ConfirmDelete(){}
@@ -120,7 +134,7 @@ private void yesButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     /**
      * @param args the command line arguments
      */
-     public static void run(final MainFrame mf, final Appointment a, final CalendarEx calendar, final EditEventDialog d) {
+     public static void run(final MainFrame mf, final Appointment a, final CalendarEx calendar, final EditEventDialog di) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -147,7 +161,7 @@ private void yesButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ConfirmDelete dialog = new ConfirmDelete(new javax.swing.JFrame(), true, mf, calendar, a, d);
+                ConfirmDelete dialog = new ConfirmDelete(new javax.swing.JFrame(), true, mf, calendar, a, di);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

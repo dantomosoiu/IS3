@@ -11,10 +11,17 @@
 package is3calendar2;
 
 import assortedComponents.CategoriesButtons;
+import assortedComponents.HelpDialog;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.io.File;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -36,6 +43,17 @@ public class MainFrame extends javax.swing.JFrame {
     /** Creates new form Mainframe */
     public MainFrame() {
         initComponents();
+        
+        Toolkit kit = this.getToolkit();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] gs = ge.getScreenDevices();
+        Insets in = kit.getScreenInsets(gs[0].getDefaultConfiguration());
+        Dimension d = kit.getScreenSize();
+        int max_width = (d.width - in.left - in.right);
+        int max_height = (d.height - in.top - in.bottom);
+        this.setSize(Math.min(max_width, 850), Math.min(max_height, 550));//whatever size you want but smaller the insets
+        this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight() ) / 2);        
+        
         category = 0;
         catButtonPanel.add(new CategoriesButtons(this));
         catButtonPanel.setLayout(new GridBagLayout());
@@ -91,6 +109,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         help.setText("Help");
+        help.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpActionPerformed(evt);
+            }
+        });
 
         settings.setText("Settings");
         settings.setToolTipText("");
@@ -119,7 +142,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         InternalPanelLayout.setVerticalGroup(
             InternalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 292, Short.MAX_VALUE)
+            .addGap(0, 454, Short.MAX_VALUE)
         );
 
         dayButton.setText("Day");
@@ -295,6 +318,10 @@ private void toDoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     currentPanel = toDoPanel;
     toDoPanel.populateTable();
 }//GEN-LAST:event_toDoButtonActionPerformed
+
+private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpActionPerformed
+    HelpDialog.run();
+}//GEN-LAST:event_helpActionPerformed
 
     /**
      * @param args the command line arguments
