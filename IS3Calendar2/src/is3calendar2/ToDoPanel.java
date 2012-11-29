@@ -100,13 +100,15 @@ public final class ToDoPanel extends javax.swing.JPanel {
             }
             appointments = appointments2;
         }
-        int evHr = Integer.parseInt(t.substring(0, 2));
-        int evDay = Integer.parseInt(d.substring(0, 2));
-        int evMonth = Integer.parseInt(d.substring(3, 5));
-        int evYear = Integer.parseInt(d.substring(6, 10));
-        for (Appointment a : appointments) {
-            if (a.date.year == evYear && a.date.month == evMonth && a.date.day == evDay && a.description.equals(eN) && evHr == a.start_time.hr) {
-                return a;
+        if (t.length() > 0) {
+            int evHr = Integer.parseInt(t.substring(0, 2));
+            int evDay = Integer.parseInt(d.substring(0, 2));
+            int evMonth = Integer.parseInt(d.substring(3, 5));
+            int evYear = Integer.parseInt(d.substring(6, 10));
+            for (Appointment a : appointments) {
+                if (a.date.year == evYear && a.date.month == evMonth && a.date.day == evDay && a.description.equals(eN) && evHr == a.start_time.hr) {
+                    return a;
+                }
             }
         }
         return null;

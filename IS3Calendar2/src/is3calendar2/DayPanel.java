@@ -84,20 +84,24 @@ public final class DayPanel extends javax.swing.JPanel {
 
     private Appointment findEvent(String t, String eN) {
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, day);
-        if (category != 0) {
-            List<Appointment> appointments2 = new ArrayList<Appointment>();
-            for (Appointment a : appointments) {
-                if (a.category == category) {
-                    appointments2.add(a);
+        if (appointments.size() > 0) {
+            if (category != 0) {
+                List<Appointment> appointments2 = new ArrayList<Appointment>();
+                for (Appointment a : appointments) {
+                    if (a.category == category) {
+                        appointments2.add(a);
+                    }
                 }
+                appointments = appointments2;
             }
-            appointments = appointments2;
-        }
-        int hr = Integer.parseInt(t.substring(0, 2));
-        int min = Integer.parseInt(t.substring(3, 5));
-        for (Appointment a : appointments) {
-            if (a.start_time.min == min && a.description.equals(eN) && hr == a.start_time.hr) {
-                return a;
+            if (t.length() > 0) {
+                int hr = Integer.parseInt(t.substring(0, 2));
+                int min = Integer.parseInt(t.substring(3, 5));
+                for (Appointment a : appointments) {
+                    if (a.start_time.min == min && a.description.equals(eN) && hr == a.start_time.hr) {
+                        return a;
+                    }
+                }
             }
         }
         return null;
