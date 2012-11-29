@@ -214,7 +214,7 @@ public class AddEventDialog extends javax.swing.JDialog {
 
 
         cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText(), LocationInput1.getText(), category.getSelectedIndex(), Appointment.RecurrenceFromInt(recurrence.getSelectedIndex()), 0));
-        sendEmail("noreply@is3calendar.com", InviteInput.getText(), "Test", "Test");
+        //sendEmail("noreply@is3calendar.com", InviteInput.getText(), "Test", "Test");
         cal.saveCalendar("./cal");
         
 
