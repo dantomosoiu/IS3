@@ -10,6 +10,7 @@
  */
 package assortedComponents;
 
+import is3calendar2.MainFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
 
@@ -32,18 +33,18 @@ public class YearCell extends javax.swing.JPanel {
             } else {
                 labels[y].setText("");
             }
-            if (i[y] != 0 && i[y] < 5) {
+            if (i[y] != 0 && i[y] < MainFrame.lowBusynessCount) {
                 labels[y].setOpaque(true);
-                labels[y].setBackground(Color.yellow);
-            } else if (i[y] != 0 && i[y] < 10) {
+                labels[y].setBackground(MainFrame.lowBusynessColor);
+            } else if (i[y] != 0 && i[y] < MainFrame.mediumBusynessCount) {
                 labels[y].setOpaque(true);
-                labels[y].setBackground(Color.orange);
-            } else if (i[y] > 9) {
+                labels[y].setBackground(MainFrame.mediumBusynessColor);
+            } else if (i[y] > MainFrame.highBusynessCount - 1) {
                 labels[y].setOpaque(true);
-                labels[y].setBackground(Color.red);
+                labels[y].setBackground(MainFrame.highBusynessColor);
             } else {
                 labels[y].setOpaque(false);
-                labels[y].setBackground(Color.white);
+                labels[y].setBackground(MainFrame.emptyBusynessColor);
             }
         }
 

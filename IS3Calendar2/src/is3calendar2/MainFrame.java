@@ -14,6 +14,7 @@ import assortedComponents.CategoriesButtons;
 import assortedComponents.HelpDialog;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -42,8 +43,16 @@ public final class MainFrame extends javax.swing.JFrame {
     private YearPanel yearPanel; // The Year View
     private int category; // integer representation of selected category
     public ToDoPanel toDoPanel; // The To-Do View
-    //Settings@
+    //Settings
     public static int DefaultView = 0;
+    public static int lowBusynessCount = 1;
+    public static int mediumBusynessCount = 2;
+    public static int highBusynessCount = 3;
+    public static Color emptyBusynessColor = Color.RED;
+    public static Color lowBusynessColor = Color.BLUE;
+    public static Color mediumBusynessColor = Color.CYAN;
+    public static Color highBusynessColor = Color.LIGHT_GRAY;
+    public static SettingsDialog SettingsDialog;
 
     /**
      * Creates new form Mainframe
@@ -331,6 +340,27 @@ private void addEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 if (line.startsWith("DefaultView")) {
                     DefaultView = Integer.parseInt(line.replace("DefaultView=", ""));
                 }
+                if (line.startsWith("lowBusynessCount")) {
+                    lowBusynessCount = Integer.parseInt(line.replace("lowBusynessCount=", ""));
+                }
+                if (line.startsWith("mediumBusynessCount")) {
+                    mediumBusynessCount = Integer.parseInt(line.replace("mediumBusynessCount=", ""));
+                }
+                if (line.startsWith("highBusynessCount")) {
+                    highBusynessCount = Integer.parseInt(line.replace("highBusynessCount=", ""));
+                }
+                if (line.startsWith("emptyBusynessColor")) {
+                    emptyBusynessColor = SettingsDialog.getColorFromIndex(Integer.parseInt(line.replace("emptyBusynessColor=", "")));
+                }
+                if (line.startsWith("lowBusynessColor")) {
+                    lowBusynessColor = SettingsDialog.getColorFromIndex(Integer.parseInt(line.replace("lowBusynessColor=", "")));
+                }
+                if (line.startsWith("mediumBusynessColor")) {
+                    mediumBusynessColor = SettingsDialog.getColorFromIndex(Integer.parseInt(line.replace("mediumBusynessColor=", "")));
+                }
+                if (line.startsWith("highBusynessColor")) {
+                    highBusynessColor = SettingsDialog.getColorFromIndex(Integer.parseInt(line.replace("highBusynessColor=", "")));
+                }
             }
 
         } catch (Exception e) {
@@ -341,6 +371,14 @@ private void addEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         try {
             BufferedWriter settingsWriter = new BufferedWriter(new FileWriter("settings.txt"));
             settingsWriter.write("DefaultView=" + DefaultView + "\n");
+            settingsWriter.write("lowBusynessCount=" + lowBusynessCount + "\n");
+            settingsWriter.write("mediumBusynessCount=" + mediumBusynessCount + "\n");
+            settingsWriter.write("highBusynessCount=" + highBusynessCount + "\n");
+            settingsWriter.write("emptyBusynessColor=" + SettingsDialog.getIndexFromColour(emptyBusynessColor) + "\n");
+            settingsWriter.write("lowBusynessColor=" + SettingsDialog.getIndexFromColour(lowBusynessColor) + "\n");
+            settingsWriter.write("mediumBusynessColor=" + SettingsDialog.getIndexFromColour(mediumBusynessColor) + "\n");
+            settingsWriter.write("highBusynessColor=" + SettingsDialog.getIndexFromColour(highBusynessColor) + "\n");
+
 
             settingsWriter.close();
         } catch (Exception e) {
@@ -421,7 +459,7 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
 }//GEN-LAST:event_helpActionPerformed
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
-       SettingsDialog.run();
+        SettingsDialog.run();
     }//GEN-LAST:event_settingsMouseClicked
 
     /**
