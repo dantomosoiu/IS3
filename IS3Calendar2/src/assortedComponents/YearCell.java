@@ -31,21 +31,26 @@ public class YearCell extends javax.swing.JPanel {
             if (j[y] != 0) {
                 labels[y].setText(Integer.toString(j[y]));
             } else {
-                labels[y].setText("");
+                labels[y].setText("");              
             }
-            if (i[y] != 0 && i[y] < MainFrame.lowBusynessCount) {
-                labels[y].setOpaque(true);
-                labels[y].setBackground(MainFrame.lowBusynessColor);
-            } else if (i[y] != 0 && i[y] < MainFrame.mediumBusynessCount) {
-                labels[y].setOpaque(true);
-                labels[y].setBackground(MainFrame.mediumBusynessColor);
-            } else if (i[y] > MainFrame.highBusynessCount - 1) {
+
+            if (i[y] != 0 && i[y] >= MainFrame.highBusynessCount) {
                 labels[y].setOpaque(true);
                 labels[y].setBackground(MainFrame.highBusynessColor);
-            } else {
-                labels[y].setOpaque(false);
-                labels[y].setBackground(MainFrame.emptyBusynessColor);
+                continue;
             }
+            if (i[y] != 0 && i[y] >= MainFrame.mediumBusynessCount) {
+                labels[y].setOpaque(true);
+                labels[y].setBackground(MainFrame.mediumBusynessColor);
+                continue;
+            }
+            if (i[y] != 0 && i[y] >= MainFrame.lowBusynessCount) {
+                labels[y].setOpaque(true);
+                labels[y].setBackground(MainFrame.lowBusynessColor);
+                continue;
+            }
+            labels[y].setOpaque(true);
+            labels[y].setBackground(MainFrame.emptyBusynessColor);
         }
 
     }

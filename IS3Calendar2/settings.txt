@@ -1,8 +1,8 @@
 DefaultView=0
-lowBusynessCount=7
-mediumBusynessCount=8
-highBusynessCount=9
-emptyBusynessColor=3
-lowBusynessColor=2
-mediumBusynessColor=1
-highBusynessColor=0
+lowBusynessCount=1
+mediumBusynessCount=2
+highBusynessCount=3
+emptyBusynessColor=11
+lowBusynessColor=9
+mediumBusynessColor=8
+highBusynessColor=4
