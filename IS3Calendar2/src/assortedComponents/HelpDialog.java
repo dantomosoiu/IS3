@@ -97,7 +97,7 @@ public class HelpDialog extends javax.swing.JDialog {
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
-        jTextPane2.setText("<Add Help Here>");
+        jTextPane2.setText("*Double-click on an event to edit it.\n*You can go from year view to month view and from month view to day view\nby double-clicking on month or day.\n*On the setting menu, choose the color for days with more than a \nspecified number of events. They will be displayed in year view.\n*You can press delete after you select an event to delete it.\n*In the busyness graph, the number of events can be seen on the left.");
         jTextPane2.setName("jTextPane2"); // NOI18N
         jScrollPane2.setViewportView(jTextPane2);
 
@@ -122,7 +122,7 @@ public class HelpDialog extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

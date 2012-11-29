@@ -41,7 +41,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" pref="298" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" pref="301" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -167,7 +167,7 @@
       <SubComponents>
         <Component class="javax.swing.JTextPane" name="jTextPane2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&lt;Add Help Here&gt;"/>
+            <Property name="text" type="java.lang.String" value="*Double-click on an event to edit it.&#xa;*You can go from year view to month view and from month view to day view&#xa;by double-clicking on month or day.&#xa;*On the setting menu, choose the color for days with more than a &#xa;specified number of events. They will be displayed in year view.&#xa;*You can press delete after you select an event to delete it.&#xa;*In the busyness graph, the number of events can be seen on the left."/>
             <Property name="name" type="java.lang.String" value="jTextPane2" noResource="true"/>
           </Properties>
         </Component>
