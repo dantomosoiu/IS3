@@ -50,10 +50,9 @@ public final class ToDoPanel extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int selectedRow = toDoTable.getSelectedRow();
-                    String date = toDoTable.getValueAt(selectedRow, 0).toString();
                     String time = toDoTable.getValueAt(selectedRow, 1).toString();
                     String event = toDoTable.getValueAt(selectedRow, 2).toString();
-                    Appointment a = findEvent(date, time, event);
+                    Appointment a = findEvent(time, event);
                     if (a != null) {
                         EditEventDialog edit = new EditEventDialog();
                         EditEventDialog.run(mainF, a, cal);
@@ -74,10 +73,9 @@ public final class ToDoPanel extends javax.swing.JPanel {
                 int kc = ke.getKeyCode();
                 if (kc == KeyEvent.VK_DELETE) {
                     int selectedRow = toDoTable.getSelectedRow();
-                    String date = toDoTable.getValueAt(selectedRow, 0).toString();
                     String time = toDoTable.getValueAt(selectedRow, 1).toString();
                     String event = toDoTable.getValueAt(selectedRow, 2).toString();
-                    Appointment a = findEvent(date, time, event);
+                    Appointment a = findEvent(time, event);
                     if (a != null) {
                         ConfirmDelete.run(mainF, a, cal, null);
                     }
@@ -89,25 +87,25 @@ public final class ToDoPanel extends javax.swing.JPanel {
 
     }
 
-    private Appointment findEvent(String d, String t, String eN) {
-        List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, CalendarDate.moveMonth(12, day));
-        if (category != 0) {
-            List<Appointment> appointments2 = new ArrayList<Appointment>();
-            for (Appointment a : appointments) {
-                if (a.category == category) {
-                    appointments2.add(a);
+    private Appointment findEvent(String t, String eN) {
+        List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, day);
+        if (appointments.size() > 0) {
+            if (category != 0) {
+                List<Appointment> appointments2 = new ArrayList<Appointment>();
+                for (Appointment a : appointments) {
+                    if (a.category == category) {
+                        appointments2.add(a);
+                    }
                 }
+                appointments = appointments2;
             }
-            appointments = appointments2;
-        }
-        if (t.length() > 0) {
-            int evHr = Integer.parseInt(t.substring(0, 2));
-            int evDay = Integer.parseInt(d.substring(0, 2));
-            int evMonth = Integer.parseInt(d.substring(3, 5));
-            int evYear = Integer.parseInt(d.substring(6, 10));
-            for (Appointment a : appointments) {
-                if (a.date.year == evYear && a.date.month == evMonth && a.date.day == evDay && a.description.equals(eN) && evHr == a.start_time.hr) {
-                    return a;
+            if (t.length() > 0) {
+                int hr = Integer.parseInt(t.substring(0, 2));
+                int min = Integer.parseInt(t.substring(3, 5));
+                for (Appointment a : appointments) {
+                    if (a.start_time.min == min && a.description.equals(eN) && hr == a.start_time.hr) {
+                        return a;
+                    }
                 }
             }
         }

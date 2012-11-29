@@ -468,8 +468,6 @@ public class SettingsDialog extends javax.swing.JDialog {
 
     public static int getIndexFromColour(Color c) {
 
-        System.out.println("calling get index");
-
         if (c.equals(Color.BLUE)) {
             return 0;
         }
@@ -512,8 +510,6 @@ public class SettingsDialog extends javax.swing.JDialog {
 
     private static String getStringFromColour(Color c) {
 
-        System.out.println("calling get index");
-
         if (c.equals(Color.BLUE)) {
             return "Blue";
         }
@@ -555,7 +551,6 @@ public class SettingsDialog extends javax.swing.JDialog {
     }
 
     public static Color getColorFromIndex(int i) {
-        System.out.println("calling get colour");
         switch (i) {
             case 0:
                 return Color.BLUE;

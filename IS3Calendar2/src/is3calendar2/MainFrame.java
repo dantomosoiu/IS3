@@ -41,6 +41,7 @@ public final class MainFrame extends javax.swing.JFrame {
     private WeekPanel weekPanel; // The Week View
     private MonthPanel monthPanel; // The Month View
     private YearPanel yearPanel; // The Year View
+    private BusynessGraph busynessGraph; //i wonder what view this is
     private int category; // integer representation of selected category
     public ToDoPanel toDoPanel; // The To-Do View
     //Settings
@@ -89,6 +90,7 @@ public final class MainFrame extends javax.swing.JFrame {
         monthPanel = new MonthPanel(this, cal, curDay);//creates a new Month Panel
         yearPanel = new YearPanel(this, cal, curDay);//creates a new Year Panel
         toDoPanel = new ToDoPanel(this, cal);//creates a new ToDo Panel
+        busynessGraph = new BusynessGraph(this, cal, curDay);
 
         InternalPanel.setLayout(new java.awt.BorderLayout());
 
@@ -140,6 +142,7 @@ public final class MainFrame extends javax.swing.JFrame {
         toDoButton = new javax.swing.JButton();
         todayButton = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        BusynessButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(243, 243, 243));
@@ -239,6 +242,13 @@ public final class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        BusynessButton.setText("Busyness");
+        BusynessButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BusynessButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -269,7 +279,9 @@ public final class MainFrame extends javax.swing.JFrame {
                         .addComponent(yearButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(toDoButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BusynessButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(todayButton))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -306,7 +318,8 @@ public final class MainFrame extends javax.swing.JFrame {
                     .addComponent(monthButton)
                     .addComponent(yearButton)
                     .addComponent(toDoButton)
-                    .addComponent(todayButton))
+                    .addComponent(todayButton)
+                    .addComponent(BusynessButton))
                 .addGap(18, 18, 18))
         );
 
@@ -462,6 +475,15 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
         SettingsDialog.run();
     }//GEN-LAST:event_settingsMouseClicked
 
+    private void BusynessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BusynessButtonActionPerformed
+        curDay = getCurrentDate();
+        InternalPanel.remove(currentPanel);
+        InternalPanel.add(busynessGraph);
+        InternalPanel.revalidate();
+        InternalPanel.repaint();
+        currentPanel = busynessGraph;
+    }//GEN-LAST:event_BusynessButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -549,6 +571,7 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BusynessButton;
     private javax.swing.JPanel InternalPanel;
     private javax.swing.JButton addEvent;
     private javax.swing.JPanel catButtonPanel;

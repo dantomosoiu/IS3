@@ -63,7 +63,9 @@
                       <Component id="yearButton" linkSize="3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="toDoButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="350" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="BusynessButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="todayButton" linkSize="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -105,6 +107,7 @@
                   <Component id="yearButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="toDoButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="todayButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="BusynessButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
           </Group>
@@ -241,6 +244,14 @@
       <AuxValues>
         <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.VerticalStrut"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="BusynessButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Busyness"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BusynessButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
