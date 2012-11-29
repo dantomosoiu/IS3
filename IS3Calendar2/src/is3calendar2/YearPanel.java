@@ -151,7 +151,7 @@ public class YearPanel extends javax.swing.JPanel {
             }
         ));
         yearTable.setGridColor(new java.awt.Color(4, 2, 2));
-        yearTable.setRowHeight(125);
+        yearTable.setRowHeight(135);
         jScrollPane1.setViewportView(yearTable);
         yearTable.setShowGrid(true);
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -21,8 +21,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="previousButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="yearLabel" pref="421" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="monthLabel" pref="415" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="nextButton" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -39,11 +39,11 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="previousButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="nextButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="yearLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="monthLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="260" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" pref="240" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -65,10 +65,10 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="yearLabel">
+    <Component class="javax.swing.JLabel" name="monthLabel">
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="Year"/>
+        <Property name="text" type="java.lang.String" value="Day"/>
       </Properties>
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
@@ -81,50 +81,29 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="yearTable">
+        <Component class="javax.swing.JTable" name="monthTable">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="4" rowCount="3">
-                <Column editable="true" title="" type="java.lang.Object"/>
-                <Column editable="true" title="" type="java.lang.Object"/>
-                <Column editable="true" title="" type="java.lang.Object"/>
-                <Column editable="true" title="" type="java.lang.Object"/>
+              <Table columnCount="7" rowCount="6">
+                <Column editable="false" title="Monday" type="java.lang.Object"/>
+                <Column editable="false" title="Tuesday" type="java.lang.Object"/>
+                <Column editable="false" title="Wednesday" type="java.lang.Object"/>
+                <Column editable="false" title="Thursday" type="java.lang.Object"/>
+                <Column editable="false" title="Friday" type="java.lang.Object"/>
+                <Column editable="false" title="Saturday" type="java.lang.Object"/>
+                <Column editable="false" title="Sunday" type="java.lang.Object"/>
               </Table>
-            </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-              <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-              </TableColumnModel>
             </Property>
             <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="2" green="2" red="4" type="rgb"/>
             </Property>
-            <Property name="rowHeight" type="int" value="135"/>
+            <Property name="rowHeight" type="int" value="60"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="yearTable.setShowGrid(true);"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="monthTable.setShowGrid(true);"/>
           </AuxValues>
         </Component>
       </SubComponents>
