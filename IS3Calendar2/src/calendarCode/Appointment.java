@@ -13,7 +13,6 @@ public class Appointment implements Comparable<Appointment> {
 
         NONE, DAILY, WEEKLY, TWO_WEEKLY, FOUR_WEEKLY
     };
-    
     public String description; // Description of the appointment
     public String location;    // where it occurs (optional)
     public int category;    // Type of appointment (eg, work, social, uni etc)
@@ -149,6 +148,7 @@ public class Appointment implements Comparable<Appointment> {
 
     }
 
+    @Override
     public String toString() {
         // print appointment to the console
         return (description + ", " + location + ", " + ", " + category + ", " + date.toString()
@@ -165,7 +165,7 @@ public class Appointment implements Comparable<Appointment> {
         int id = CalendarDate.getDateID(date);
 
         // how many days between recurrences
-        int gap = 0;
+        int gap;
 
         // if the appointment date occurs within the time frame, keep this date
         if (id <= endID && id >= startID) {

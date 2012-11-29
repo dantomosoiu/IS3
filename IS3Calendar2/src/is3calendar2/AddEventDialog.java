@@ -5,7 +5,6 @@
 package is3calendar2;
 
 import calendarCode.Appointment;
-import calendarCode.Appointment.Recurrence;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import calendarCode.CalendarTime;
@@ -25,14 +24,14 @@ public class AddEventDialog extends javax.swing.JDialog {
 
     private CalendarEx cal;
     private MainFrame mainFrame;
-    
+
     /**
      * Creates new form AddEventDialog
      */
     public AddEventDialog(java.awt.Frame parent, boolean modal, CalendarEx calendar, MainFrame mainFrame) {
         super(parent, modal);
         initComponents();
-        
+
         Toolkit kit = this.getToolkit();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices();
@@ -40,8 +39,8 @@ public class AddEventDialog extends javax.swing.JDialog {
         Dimension d = kit.getScreenSize();
         int max_width = (d.width - in.left - in.right);
         int max_height = (d.height - in.top - in.bottom);
-        this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight() ) / 2);        
-        
+        this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight()) / 2);
+
         cal = calendar;
         this.mainFrame = mainFrame;
     }
@@ -190,20 +189,24 @@ public class AddEventDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
-        
+
         CalendarDate date = new CalendarDate(Integer.parseInt(DayList.getSelectedItem().toString()), CalendarEx.convertMonth(MonthList.getSelectedItem().toString()), Integer.parseInt(YearInput.getText()));
         int hour = Integer.parseInt(HourList.getSelectedItem().toString());
-        if (AMPMList.getSelectedItem().toString().equals("PM")) hour += 12;
-        if (hour == 24) hour = 0;
-        CalendarTime start = new CalendarTime(hour, Integer.parseInt(MinuteList.getSelectedItem().toString()) );
-        CalendarTime end = new CalendarTime(hour+1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
+        if (AMPMList.getSelectedItem().toString().equals("PM")) {
+            hour += 12;
+        }
+        if (hour == 24) {
+            hour = 0;
+        }
+        CalendarTime start = new CalendarTime(hour, Integer.parseInt(MinuteList.getSelectedItem().toString()));
+        CalendarTime end = new CalendarTime(hour + 1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
         String rec = recurrence.getSelectedItem().toString().toUpperCase();
-        
 
-        cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText(), LocationInput1.getText(), category.getSelectedIndex(), Appointment.RecurrenceFromInt(recurrence.getSelectedIndex()),0));
-        
+
+        cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText(), LocationInput1.getText(), category.getSelectedIndex(), Appointment.RecurrenceFromInt(recurrence.getSelectedIndex()), 0));
+
         cal.saveCalendar("./cal");
-        
+
         this.mainFrame.RefreshView();
         this.dispose();
     }//GEN-LAST:event_SaveActionPerformed
@@ -241,6 +244,7 @@ public class AddEventDialog extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 AddEventDialog dialog = new AddEventDialog(new javax.swing.JFrame(), true, calendar, mainframe);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -257,8 +261,6 @@ public class AddEventDialog extends javax.swing.JDialog {
             }
         });
     }
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox AMPMList;
     private javax.swing.JComboBox DayList;

@@ -10,17 +10,14 @@
  */
 package is3calendar2;
 
-
 import assortedComponents.MonthCell;
-import assortedComponents.MonthTableModel;
 import assortedComponents.MonthCellRenderer;
+import assortedComponents.MonthTableModel;
 import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -36,89 +33,131 @@ public class MonthPanel extends javax.swing.JPanel {
     private int mondayOffset;
     private int category;
     private MainFrame mainF;
-    
-    /** Creates new form DayPanel */
+
+    /**
+     * Creates new form DayPanel
+     */
     public MonthPanel(MainFrame mf, CalendarEx calendar, CalendarDate day) {
         initComponents();
         cal = calendar;
         currentDay = day;
         setupTable();
         mainF = mf;
-        
+
         monthTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int selectedCol = monthTable.getSelectedColumn();
                     int selectedRow = monthTable.getSelectedRow();
-                    MonthCell cell = (MonthCell)monthTable.getValueAt(selectedRow, selectedCol);
-                    if (cell.getDay()>0) {currentDay = new CalendarDate(cell.getDay(), currentDay.month, currentDay.year); mainF.dayRepaint();}
+                    MonthCell cell = (MonthCell) monthTable.getValueAt(selectedRow, selectedCol);
+                    if (cell.getDay() > 0) {
+                        currentDay = new CalendarDate(cell.getDay(), currentDay.month, currentDay.year);
+                        mainF.dayRepaint();
+                    }
                 }
             }
         });
     }
-    
+
     public void setCategory(int i) {
         category = i;
     }
-    
+
     private void setupTable() {
         int size = 6;
         MonthCell[][] data = new MonthCell[size][7];
-        for (int i = 0; i < size; i++) for (int j = 0; j < 7; j++) data[i][j] = new MonthCell(0,0);
-        
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < 7; j++) {
+                data[i][j] = new MonthCell(0, 0);
+            }
+        }
+
         final TableModel model = new MonthTableModel(data, size);
-   
+
         monthTable.setDefaultRenderer(MonthCell.class, new MonthCellRenderer());
-        
+
         monthTable.setModel(
-            new DefaultTableModel(data, new String [] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}) {
-            Class[] types = new Class[] {MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class};
-            boolean[] canEdit = new boolean[] {false, false, false, false, false, false, false};
-            @Override
-            public Class getColumnClass(int columnIndex){ return types [columnIndex];}
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex){ return canEdit [columnIndex];}
-        });
-        
+                new DefaultTableModel(data, new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}) {
+                    Class[] types = new Class[]{MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class, MonthCell.class};
+                    boolean[] canEdit = new boolean[]{false, false, false, false, false, false, false};
+
+                    @Override
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+
         monthTable.setShowGrid(true);
     }
-    
-    public void populateTable(){
+
+    public void populateTable() {
         startEndDay();
-            int[] counters = new int[CalendarDate.getDaysOfMonth(startDay.month, startDay.year)];
-            for (int i = 0; i < counters.length; i++) {List<Appointment> appointments = cal.getAppointmentsBetweenDates(CalendarDate.moveDay(i, startDay), CalendarDate.moveDay(i, startDay)); if (category != 0) { List<Appointment> appointments2 = new ArrayList<Appointment>(); for (Appointment a : appointments)if (a.category == category) appointments2.add(a); appointments = appointments2;}; counters[i] = appointments.size();}
-        DefaultTableModel model = (DefaultTableModel)monthTable.getModel();
-        if ((mondayOffset+counters.length < 36) && (model.getRowCount() == 6)) model.removeRow(model.getRowCount()-1);
-        else if (mondayOffset+counters.length > 35 && model.getRowCount() == 5)  model.addRow(new Object[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"});
-        
+        int[] counters = new int[CalendarDate.getDaysOfMonth(startDay.month, startDay.year)];
+        for (int i = 0; i < counters.length; i++) {
+            List<Appointment> appointments = cal.getAppointmentsBetweenDates(CalendarDate.moveDay(i, startDay), CalendarDate.moveDay(i, startDay));
+            if (category != 0) {
+                List<Appointment> appointments2 = new ArrayList<Appointment>();
+                for (Appointment a : appointments) {
+                    if (a.category == category) {
+                        appointments2.add(a);
+                    }
+                }
+                appointments = appointments2;
+            }
+            counters[i] = appointments.size();
+        }
+        DefaultTableModel model = (DefaultTableModel) monthTable.getModel();
+        if ((mondayOffset + counters.length < 36) && (model.getRowCount() == 6)) {
+            model.removeRow(model.getRowCount() - 1);
+        } else if (mondayOffset + counters.length > 35 && model.getRowCount() == 5) {
+            model.addRow(new Object[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"});
+        }
+
         int row = 0;
         int col;
-        for (col = 0; col < mondayOffset;col++) model.setValueAt(new MonthCell(0,0), 0, col);
+        for (col = 0; col < mondayOffset; col++) {
+            model.setValueAt(new MonthCell(0, 0), 0, col);
+        }
         for (int i = 0; i < counters.length; i++) {
-            model.setValueAt(new MonthCell(i+1, counters[i]), row, col);
+            model.setValueAt(new MonthCell(i + 1, counters[i]), row, col);
             col++;
-            if(col > 6){
+            if (col > 6) {
                 col = 0;
                 row++;
             }
         }
-        if (col != 0) for (;col<7;col++) model.setValueAt(new MonthCell(0, 0), row, col);
+        if (col != 0) {
+            for (; col < 7; col++) {
+                model.setValueAt(new MonthCell(0, 0), row, col);
+            }
+        }
         monthTable.setShowGrid(true);
     }
-    
-    public CalendarDate getCurrentDate() { return currentDay; }
-    public void setCurrentDate(CalendarDate d) {currentDay = d;}
-    
+
+    public CalendarDate getCurrentDate() {
+        return currentDay;
+    }
+
+    public void setCurrentDate(CalendarDate d) {
+        currentDay = d;
+    }
+
     private void startEndDay() {
-        startDay = new CalendarDate(1,currentDay.month, currentDay.year);
-        mondayOffset = CalendarDate.getDayNumberFromDayName(CalendarDate.getDay(startDay.day, startDay.month, startDay.year))-1;
+        startDay = new CalendarDate(1, currentDay.month, currentDay.year);
+        mondayOffset = CalendarDate.getDayNumberFromDayName(CalendarDate.getDay(startDay.day, startDay.month, startDay.year)) - 1;
         monthLabel.setText(CalendarEx.monthToString(startDay.month) + ", " + startDay.year);
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -220,7 +259,6 @@ private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     currentDay = CalendarDate.moveMonth(1, currentDay);
     populateTable();
 }//GEN-LAST:event_nextButtonActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel monthLabel;

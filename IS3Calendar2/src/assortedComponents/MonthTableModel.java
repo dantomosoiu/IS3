@@ -10,22 +10,32 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author hector
  */
-public class MonthTableModel extends AbstractTableModel {
-  MonthCell[][] cell;
-  int size;
- 
-  public MonthTableModel(MonthCell[][] c, int s) {
-    cell = c;
-    size = s;
-    for (int i=0;i<this.getColumnCount();i++) {
-        for (int j=0;j<this.getRowCount();j++) {
-            this.setValueAt(cell[j][i], j, i);
+public final class MonthTableModel extends AbstractTableModel {
+
+    MonthCell[][] cell;
+    int size;
+
+    public MonthTableModel(MonthCell[][] c, int s) {
+        cell = c;
+        size = s;
+        for (int i = 0; i < this.getColumnCount(); i++) {
+            for (int j = 0; j < this.getRowCount(); j++) {
+                this.setValueAt(cell[j][i], j, i);
+            }
         }
     }
-  }
- 
-    public Class getColumnClass(int columnIndex) { return MonthCell.class; }
-    public int getColumnCount() { return 7; }
+
+    @Override
+    public Class getColumnClass(int columnIndex) {
+        return MonthCell.class;
+    }
+
+    @Override
+    public int getColumnCount() {
+        return 7;
+    }
+
+    @Override
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
             case 0:
@@ -45,10 +55,19 @@ public class MonthTableModel extends AbstractTableModel {
         }
         return "";
     }
+
     @Override
-    public int getRowCount() { return size; }
+    public int getRowCount() {
+        return size;
+    }
+
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) { return cell[rowIndex][columnIndex]; }
+    public Object getValueAt(int rowIndex, int columnIndex) {
+        return cell[rowIndex][columnIndex];
+    }
+
     @Override
-    public boolean isCellEditable(int columnIndex, int rowIndex) { return false; }
+    public boolean isCellEditable(int columnIndex, int rowIndex) {
+        return false;
+    }
 }

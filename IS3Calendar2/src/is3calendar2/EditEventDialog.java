@@ -24,19 +24,20 @@ import java.util.logging.Logger;
 public class EditEventDialog extends javax.swing.JDialog {
 
     private CalendarEx cal;
-    private Appointment app; 
+    private Appointment app;
     private MainFrame mainF;
+
     /**
      * Creates new form AddEventDialog
      */
     public EditEventDialog(java.awt.Frame parent, boolean modal, MainFrame mf, Appointment a, CalendarEx calendar, MainFrame mainFrame) {
         super(parent, modal);
-        
+
         cal = calendar;
         app = a;
         mainF = mf;
         initComponents();
-        
+
         Toolkit kit = this.getToolkit();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices();
@@ -44,15 +45,14 @@ public class EditEventDialog extends javax.swing.JDialog {
         Dimension d = kit.getScreenSize();
         int max_width = (d.width - in.left - in.right);
         int max_height = (d.height - in.top - in.bottom);
-        this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight() ) / 2);        
+        this.setLocation((int) (max_width - this.getWidth()) / 2, (int) (max_height - this.getHeight()) / 2);
     }
 
     public void setApp(Appointment a, CalendarEx c) {
         app = a;
         cal = c;
-        
+
     }
-    
 
     EditEventDialog() {
     }
@@ -210,20 +210,26 @@ public class EditEventDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
-        
+
         CalendarDate date = new CalendarDate(Integer.parseInt(DayList.getSelectedItem().toString()), CalendarEx.convertMonth(MonthList.getSelectedItem().toString()), Integer.parseInt(YearInput.getText()));
         int hour = Integer.parseInt(HourList.getSelectedItem().toString());
-        if (AMPMList.getSelectedItem().toString().equals("PM")) hour += 12;
-        if (hour == 24) hour = 0;
-        CalendarTime start = new CalendarTime(hour, Integer.parseInt(MinuteList.getSelectedItem().toString()) );
-        CalendarTime end = new CalendarTime(hour+1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
+        if (AMPMList.getSelectedItem().toString().equals("PM")) {
+            hour += 12;
+        }
+        if (hour == 24) {
+            hour = 0;
+        }
+        CalendarTime start = new CalendarTime(hour, Integer.parseInt(MinuteList.getSelectedItem().toString()));
+        CalendarTime end = new CalendarTime(hour + 1, Integer.parseInt(MinuteList.getSelectedItem().toString()));
         String rec = recurrence.getSelectedItem().toString().toUpperCase();
-        
+
         cal.removeAppointment(app);
-        cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText(), LocationInput1.getText(), category.getSelectedIndex(), Appointment.RecurrenceFromInt(recurrence.getSelectedIndex()),0));
-        
+        cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText(), LocationInput1.getText(), category.getSelectedIndex(), Appointment.RecurrenceFromInt(recurrence.getSelectedIndex()), 0));
+
         cal.saveCalendar("./cal");
-        
+
+        mainF.RefreshView();
+
         this.dispose();
     }//GEN-LAST:event_SaveActionPerformed
 
@@ -233,7 +239,7 @@ public class EditEventDialog extends javax.swing.JDialog {
 
 private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoveActionPerformed
 
-     ConfirmDelete.run(mainF, app, cal, this);
+    ConfirmDelete.run(mainF, app, cal, this);
 }//GEN-LAST:event_RemoveActionPerformed
 
     /**
@@ -265,6 +271,7 @@ private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 EditEventDialog dialog = new EditEventDialog(new javax.swing.JFrame(), true, mf, a, calendar, null);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -281,8 +288,6 @@ private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
             }
         });
     }
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox AMPMList;
     private javax.swing.JComboBox DayList;

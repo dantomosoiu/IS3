@@ -24,14 +24,12 @@ public class CalendarEx {
     public CalendarEx() {
 
         appList = new ArrayList<Appointment>();
-
-        return;
     }
 
     public boolean openCalendar(String fileName) {
         // given the file name of a stored calendar, loads the appointments list
 
-        BufferedReader bis = null;
+        BufferedReader bis;
 
         Appointment ap;
         try {
@@ -167,8 +165,6 @@ public class CalendarEx {
             ap.printAppointment();
             System.out.println("\n");
         }
-
-        return;
     }
 
     public void addAppointment(Appointment ap) {
@@ -240,7 +236,10 @@ public class CalendarEx {
     public static int getCurrentYear() {
         return dates.get(Calendar.YEAR);
     }
-    public static CalendarDate getToday() {return new CalendarDate(getCurrentDay(), getCurrentMonth(), getCurrentYear());}
+
+    public static CalendarDate getToday() {
+        return new CalendarDate(getCurrentDay(), getCurrentMonth(), getCurrentYear());
+    }
 
     public static String monthToString(int m) {
         switch (m) {

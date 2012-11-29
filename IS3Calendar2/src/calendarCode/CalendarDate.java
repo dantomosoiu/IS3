@@ -143,7 +143,7 @@ public class CalendarDate {
                 yearDays = 365;
             }
         }
-        
+
         int no_years = yearCounter;
         int no_months;
         int no_days;
@@ -214,9 +214,13 @@ public class CalendarDate {
     }
 
     public static CalendarDate moveMonth(int i, CalendarDate d) {
-        if (d.month+i > 0 && d.month+i < 13) return new CalendarDate(d.day, d.month+i, d.year);
-        else if (d.month+i > 0) return new CalendarDate(d.day, d.month+i-12, d.year+1);
-        else return new CalendarDate(d.day, d.month+i+12, d.year-1);
+        if (d.month + i > 0 && d.month + i < 13) {
+            return new CalendarDate(d.day, d.month + i, d.year);
+        } else if (d.month + i > 0) {
+            return new CalendarDate(d.day, d.month + i - 12, d.year + 1);
+        } else {
+            return new CalendarDate(d.day, d.month + i + 12, d.year - 1);
+        }
     }
 
     public static boolean isLeap(int year) {

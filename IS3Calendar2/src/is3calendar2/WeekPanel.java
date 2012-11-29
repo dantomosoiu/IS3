@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author hector
  */
-public class WeekPanel extends javax.swing.JPanel {
+public final class WeekPanel extends javax.swing.JPanel {
 
     private CalendarEx cal;
     private CalendarDate day;
@@ -42,6 +42,7 @@ public class WeekPanel extends javax.swing.JPanel {
         mainF = mf;
 
         weekTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int selectedCol = weekTable.getSelectedColumn();
