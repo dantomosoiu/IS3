@@ -20,14 +20,18 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javax.swing.JPanel;
 
 /**
  *
  * @author hector
  */
-public class MainFrame extends javax.swing.JFrame {
+public final class MainFrame extends javax.swing.JFrame {
 
     private CalendarEx cal; //Calendar Item
     private CalendarDate curDay; //Represents the day being viewed by the user
@@ -38,12 +42,16 @@ public class MainFrame extends javax.swing.JFrame {
     private YearPanel yearPanel; // The Year View
     private int category; // integer representation of selected category
     public ToDoPanel toDoPanel; // The To-Do View
+    //Settings@
+    public static int DefaultView = 0;
 
     /**
      * Creates new form Mainframe
      */
     public MainFrame() {
         initComponents(); //Generates code for items created in Design View
+        parseSettingsFile();
+
 
         //Finds the size of the screen and item. Uses this to calculate how to position the frame in the center of the screen.
         Toolkit kit = this.getToolkit();
@@ -75,10 +83,30 @@ public class MainFrame extends javax.swing.JFrame {
 
         InternalPanel.setLayout(new java.awt.BorderLayout());
 
-        //Opens in Day View
-        InternalPanel.add(dayPanel);
-        currentPanel = dayPanel;
+        switch (DefaultView) {
+            case 0:
+                InternalPanel.add(dayPanel);
+                currentPanel = dayPanel;
+                break;
+            case 1:
+                InternalPanel.add(weekPanel);
+                currentPanel = weekPanel;
+                break;
+            case 2:
+                InternalPanel.add(monthPanel);
+                currentPanel = monthPanel;
+                break;
+            case 3:
+                InternalPanel.add(yearPanel);
+                currentPanel = yearPanel;
+                break;
+            case 4:
+                InternalPanel.add(toDoPanel);
+                currentPanel = toDoPanel;
+                break;
+        }
 
+        RefreshView();
     }
 
     /**
@@ -127,6 +155,11 @@ public class MainFrame extends javax.swing.JFrame {
 
         settings.setText("Settings");
         settings.setToolTipText("");
+        settings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settingsMouseClicked(evt);
+            }
+        });
 
         todayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         todayLabel.setText("Today's Date");
@@ -287,6 +320,33 @@ private void addEventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         monthButtonActionPerformed(null);
     }
 
+    private void parseSettingsFile() {
+        try {
+            BufferedReader settingsReader = new BufferedReader(new FileReader("settings.txt"));
+            while (true) {
+                String line = settingsReader.readLine();
+                if (line == null) {
+                    break;
+                }
+                if (line.startsWith("DefaultView")) {
+                    DefaultView = Integer.parseInt(line.replace("DefaultView=", ""));
+                }
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
+    public static void saveSettings() {
+        try {
+            BufferedWriter settingsWriter = new BufferedWriter(new FileWriter("settings.txt"));
+            settingsWriter.write("DefaultView=" + DefaultView + "\n");
+
+            settingsWriter.close();
+        } catch (Exception e) {
+        }
+    }
+
 //sets the day panel as current, and makes sure its table is up to date
 private void dayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dayButtonActionPerformed
     curDay = getCurrentDate();
@@ -359,6 +419,10 @@ private void toDoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpActionPerformed
     HelpDialog.run();
 }//GEN-LAST:event_helpActionPerformed
+
+    private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
+       SettingsDialog.run();
+    }//GEN-LAST:event_settingsMouseClicked
 
     /**
      * @param args the command line arguments
