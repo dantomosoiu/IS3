@@ -62,7 +62,7 @@ public class MainFrame extends javax.swing.JFrame {
         File f = new File("./cal");//if a calendar file is present
         if (f.exists()) cal.openCalendar("./cal");//loads it
         curDay = CalendarEx.getToday();//starts the program showing today
-        todayLabel.setText(curDay.toString());//sets the label at the top of the frame
+        todayLabel.setText("Today is " + CalendarDate.getDay(curDay.day, curDay.month, curDay.year) + ", " + curDay.toString());//sets the label at the top of the frame
 
         dayPanel = new DayPanel(this, cal, curDay);//creates a new Day Panel
         weekPanel = new WeekPanel(this, cal, curDay);//creates a new Week Panel
@@ -99,9 +99,14 @@ public class MainFrame extends javax.swing.JFrame {
         yearButton = new javax.swing.JButton();
         toDoButton = new javax.swing.JButton();
         todayButton = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(243, 243, 243));
+        setMaximumSize(new java.awt.Dimension(2147483647, 615));
+        setMinimumSize(new java.awt.Dimension(0, 615));
+        setPreferredSize(new java.awt.Dimension(845, 615));
+        setResizable(false);
 
         addEvent.setText("Add Event");
         addEvent.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +132,7 @@ public class MainFrame extends javax.swing.JFrame {
         catButtonPanel.setLayout(catButtonPanelLayout);
         catButtonPanelLayout.setHorizontalGroup(
             catButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 605, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         catButtonPanelLayout.setVerticalGroup(
             catButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,11 +145,11 @@ public class MainFrame extends javax.swing.JFrame {
         InternalPanel.setLayout(InternalPanelLayout);
         InternalPanelLayout.setHorizontalGroup(
             InternalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 605, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         InternalPanelLayout.setVerticalGroup(
             InternalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 454, Short.MAX_VALUE)
+            .addGap(0, 503, Short.MAX_VALUE)
         );
 
         dayButton.setText("Day");
@@ -175,7 +180,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        toDoButton.setText("To-Do");
+        toDoButton.setText("Upcoming Events");
         toDoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toDoButtonActionPerformed(evt);
@@ -196,46 +201,59 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(addEvent)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(todayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(todayLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(settings)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(help))
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(catButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(dayButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(weekButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(monthButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(yearButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(toDoButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
-                .addComponent(todayButton)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(InternalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(catButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(dayButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(weekButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(monthButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(yearButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(toDoButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
+                        .addComponent(todayButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(InternalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE)))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {addEvent, help, settings});
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {dayButton, monthButton, todayButton, weekButton, yearButton});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addEvent)
-                    .addComponent(help)
-                    .addComponent(settings)
-                    .addComponent(todayLabel))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(addEvent)
+                            .addComponent(help)
+                            .addComponent(settings)
+                            .addComponent(todayLabel)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(catButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(InternalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(InternalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dayButton)
@@ -244,8 +262,10 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(yearButton)
                     .addComponent(toDoButton)
                     .addComponent(todayButton))
-                .addContainerGap())
+                .addGap(18, 18, 18))
         );
+
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addEvent, help, settings});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -419,6 +439,7 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     private javax.swing.JButton addEvent;
     private javax.swing.JPanel catButtonPanel;
     private javax.swing.JButton dayButton;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JButton help;
     private javax.swing.JButton monthButton;
     private javax.swing.JButton settings;

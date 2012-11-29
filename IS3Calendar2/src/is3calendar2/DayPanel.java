@@ -14,6 +14,7 @@ import assortedComponents.ConfirmDelete;
 import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -73,6 +74,7 @@ public class DayPanel extends javax.swing.JPanel {
             }     
         }
         dayTable.addKeyListener(new DeleteKeyAdapter());
+        dayTable.getTableHeader().setPreferredSize(new Dimension(dayTable.getTableHeader().getHeight(), 27));
         
     }
     
@@ -190,7 +192,10 @@ public class DayPanel extends javax.swing.JPanel {
             }
         });
         dayTable.setGridColor(new java.awt.Color(4, 2, 2));
-        dayTable.setRowHeight(15);
+        dayTable.setRowHeight(16);
+        dayTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        dayTable.getTableHeader().setResizingAllowed(false);
+        dayTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(dayTable);
         dayTable.getColumnModel().getColumn(0).setMinWidth(50);
         dayTable.getColumnModel().getColumn(0).setPreferredWidth(75);
@@ -210,12 +215,15 @@ public class DayPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(previousButton)
                         .addGap(18, 18, 18)
-                        .addComponent(dayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                        .addComponent(dayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(nextButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {nextButton, previousButton});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()

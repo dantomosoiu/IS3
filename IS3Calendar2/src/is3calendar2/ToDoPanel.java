@@ -14,6 +14,7 @@ import assortedComponents.ConfirmDelete;
 import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
+import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -79,7 +80,8 @@ public class ToDoPanel extends javax.swing.JPanel {
             }     
         }
         toDoTable.addKeyListener(new DeleteKeyAdapter());
-   
+        toDoTable.getTableHeader().setPreferredSize(new Dimension(toDoTable.getTableHeader().getHeight(), 33));
+        
     }
     
     private Appointment findEvent(String d, String t, String eN) {
@@ -98,7 +100,7 @@ public class ToDoPanel extends javax.swing.JPanel {
     }
     
     public void populateTable(){
-        dayLabel.setText(CalendarEx.getDateString(day));
+        //dayLabel.setText(CalendarEx.getDateString(day));
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, CalendarDate.moveMonth(12, day));
         if (category != 0) { List<Appointment> appointments2 = new ArrayList<Appointment>(); for (Appointment a : appointments)if (a.category == category) appointments2.add(a); appointments = appointments2;}; 
         Collections.sort(appointments);
@@ -180,7 +182,6 @@ public class ToDoPanel extends javax.swing.JPanel {
             }
         });
         toDoTable.setGridColor(new java.awt.Color(4, 2, 2));
-        toDoTable.setRowHeight(15);
         jScrollPane1.setViewportView(toDoTable);
         toDoTable.getColumnModel().getColumn(0).setMinWidth(50);
         toDoTable.getColumnModel().getColumn(0).setPreferredWidth(100);
@@ -191,7 +192,7 @@ public class ToDoPanel extends javax.swing.JPanel {
         toDoTable.setShowGrid(true);
 
         dayLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        dayLabel.setText("To-Do");
+        dayLabel.setText("Upcoming Events");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -200,19 +201,16 @@ public class ToDoPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(89, 89, 89)
-                        .addComponent(dayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
-                        .addGap(64, 64, 64))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
+                    .addComponent(dayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(dayLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
                 .addContainerGap())
         );

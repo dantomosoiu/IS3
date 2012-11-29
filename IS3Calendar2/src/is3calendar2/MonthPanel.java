@@ -169,7 +169,10 @@ public class MonthPanel extends javax.swing.JPanel {
             }
         });
         monthTable.setGridColor(new java.awt.Color(4, 2, 2));
-        monthTable.setRowHeight(60);
+        monthTable.setMaximumSize(new java.awt.Dimension(2147483647, 390));
+        monthTable.setMinimumSize(new java.awt.Dimension(105, 390));
+        monthTable.setPreferredSize(new java.awt.Dimension(525, 390));
+        monthTable.setRowHeight(78);
         jScrollPane1.setViewportView(monthTable);
         monthTable.setShowGrid(true);
 
@@ -183,12 +186,15 @@ public class MonthPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(previousButton)
                         .addGap(18, 18, 18)
-                        .addComponent(monthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 415, Short.MAX_VALUE)
+                        .addComponent(monthLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(nextButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {nextButton, previousButton});
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
