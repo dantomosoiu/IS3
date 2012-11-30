@@ -525,6 +525,8 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
 
     //checks which panel is current, and refreshes its table
     public void RefreshView() {
+        busynessGraph.resetData(cal);
+        
         if (currentPanel.getClass().equals(dayPanel.getClass())) {
             dayPanel.populateTable();
         } else if (currentPanel.getClass().equals(weekPanel.getClass())) {
@@ -537,7 +539,6 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             toDoPanel.populateTable();
         } else if (currentPanel.getClass().equals(busynessGraph.getClass())){
             //busynessGraph = new BusynessGraph(this, cal, curDay);
-            busynessGraph.resetData(cal, curDay);
             busynessGraph.repaint();
         }
     }
@@ -565,6 +566,7 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
         weekPanel.setCategory(c);
         yearPanel.setCategory(c);
         monthPanel.setCategory(c);
+        busynessGraph.setCategory(c);
         if (currentPanel.getClass().equals(dayPanel.getClass())) {
             dayPanel.populateTable();
         } else if (currentPanel.getClass().equals(weekPanel.getClass())) {

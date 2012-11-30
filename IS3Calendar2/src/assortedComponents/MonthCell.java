@@ -35,13 +35,13 @@ public class MonthCell extends javax.swing.JPanel {
         } else {
             numEvents.setText("");
         }
-        if (j > MainFrame.highBusynessCount) {
+        if (j >= MainFrame.highBusynessCount) {
             this.setBackground(MainFrame.highBusynessColor);
         }
-        else if (j > MainFrame.mediumBusynessCount) {
+        else if (j >= MainFrame.mediumBusynessCount) {
             this.setBackground(MainFrame.mediumBusynessColor);
         }
-        else if (j > MainFrame.lowBusynessCount) {
+        else if (j >= MainFrame.lowBusynessCount) {
             this.setBackground(MainFrame.lowBusynessColor);
         }
     }

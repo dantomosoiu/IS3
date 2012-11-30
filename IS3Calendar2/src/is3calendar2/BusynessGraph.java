@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author 1102486t
  */
-public class BusynessGraph extends javax.swing.JPanel {
+public final class BusynessGraph extends javax.swing.JPanel {
 
     private CalendarEx cal;
 
@@ -48,31 +48,38 @@ public class BusynessGraph extends javax.swing.JPanel {
     public BusynessGraph(MainFrame mf, CalendarEx calendar, CalendarDate curDay) {
         initComponents();
         mainF = mf;
-        resetData(calendar, curDay);
+        currentDay = curDay;
+        resetData(calendar);
 
     }
-    
-    public void resetData(CalendarEx calendar, CalendarDate curDay){
+
+    public void resetData(CalendarEx calendar) {
         cal = calendar;
-        currentDay = curDay;
-        
-        CalendarDate firstDay = new CalendarDate(1, 1, curDay.year);
-        CalendarDate lastDay = CalendarDate.moveDay(-1, new CalendarDate(1, 1, curDay.year + 1));
+
+        CalendarDate firstDay = new CalendarDate(1, 1, currentDay.year);
+        CalendarDate lastDay = CalendarDate.moveDay(-1, new CalendarDate(1, 1, currentDay.year + 1));
 
         appList = calendar.getAppointmentsBetweenDates(firstDay, lastDay);
 
 
-        data = new int[lastDay.dateID - firstDay.dateID];
-
+        data = new int[lastDay.dateID - firstDay.dateID + 1];
+        maxApp = 0;
 
         for (Appointment app : appList) {
-            if ((app.date.dateID - firstDay.dateID + 1) < data.length) {
-                data[app.date.dateID - firstDay.dateID + 1]++;
-                if (data[app.date.dateID - firstDay.dateID + 1] > maxApp) {
-                    maxApp = data[app.date.dateID - firstDay.dateID + 1];
+            if (app.date.dateID - firstDay.dateID >= 0 && (app.date.dateID - firstDay.dateID + 1) < data.length) {
+                if (category == 0 || app.category == category) {
+                    data[app.date.dateID - firstDay.dateID + 1]++;
+                    if (data[app.date.dateID - firstDay.dateID + 1] > maxApp) {
+                        maxApp = data[app.date.dateID - firstDay.dateID + 1];
+                    }
                 }
             }
         }
+    }
+
+    public void setCategory(int c) {
+        category = c;
+        mainF.RefreshView();
     }
 
     protected void paintComponent(Graphics g) {
