@@ -381,6 +381,7 @@ public class SettingsDialog extends javax.swing.JDialog {
         
         
         MainFrame.saveSettings();
+        MainFrame.mf.RefreshView();
         try {
             this.dispose();
         } catch (Throwable ex) {

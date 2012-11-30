@@ -21,6 +21,14 @@ import java.util.List;
 public class BusynessGraph extends javax.swing.JPanel {
 
     private CalendarEx cal;
+
+    public void setCal(CalendarEx cal) {
+        this.cal = cal;
+    }
+
+    public void setCurrentDay(CalendarDate currentDay) {
+        this.currentDay = currentDay;
+    }
     private int year;
     private CalendarDate currentDay;
     private int category;
@@ -39,10 +47,15 @@ public class BusynessGraph extends javax.swing.JPanel {
 
     public BusynessGraph(MainFrame mf, CalendarEx calendar, CalendarDate curDay) {
         initComponents();
+        mainF = mf;
+        resetData(calendar, curDay);
+
+    }
+    
+    public void resetData(CalendarEx calendar, CalendarDate curDay){
         cal = calendar;
         currentDay = curDay;
-        mainF = mf;
-
+        
         CalendarDate firstDay = new CalendarDate(1, 1, curDay.year);
         CalendarDate lastDay = CalendarDate.moveDay(-1, new CalendarDate(1, 1, curDay.year + 1));
 
@@ -60,7 +73,6 @@ public class BusynessGraph extends javax.swing.JPanel {
                 }
             }
         }
-
     }
 
     protected void paintComponent(Graphics g) {
@@ -74,7 +86,7 @@ public class BusynessGraph extends javax.swing.JPanel {
         double xScale = (w - 2 * PAD) / (data.length + 1) * 1.7;
         double yScale;
         if (maxApp > 0) {
-            yScale = (h - 2 * PAD) / maxApp - 10;
+            yScale = (h - 2 * PAD) / maxApp;
         } else {
             yScale = 1;
         }
@@ -109,7 +121,7 @@ public class BusynessGraph extends javax.swing.JPanel {
 
             if (data[j] == maxApp) {
                 g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
-                g2.drawString("(" + Integer.toString(maxApp) + " events)", x0 - 55, y);
+                g2.drawString("(peak of " + Integer.toString(maxApp) + " events)", x0 - 95, y);
             }
 
         }

@@ -34,6 +34,7 @@ import javax.swing.JPanel;
  */
 public final class MainFrame extends javax.swing.JFrame {
 
+    public static MainFrame mf;
     private CalendarEx cal; //Calendar Item
     private CalendarDate curDay; //Represents the day being viewed by the user
     private JPanel currentPanel; //A holder for the different views
@@ -117,6 +118,8 @@ public final class MainFrame extends javax.swing.JFrame {
                 break;
         }
 
+        mf = this;
+        
         RefreshView();
     }
 
@@ -530,8 +533,12 @@ private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
             monthPanel.populateTable();
         } else if (currentPanel.getClass().equals(yearPanel.getClass())) {
             yearPanel.populateTable();
-        } else if (toDoPanel.getClass().equals(toDoPanel.getClass())) {
+        } else if (currentPanel.getClass().equals(toDoPanel.getClass())) {
             toDoPanel.populateTable();
+        } else if (currentPanel.getClass().equals(busynessGraph.getClass())){
+            //busynessGraph = new BusynessGraph(this, cal, curDay);
+            busynessGraph.resetData(cal, curDay);
+            busynessGraph.repaint();
         }
     }
     //returns the current Date from the current panel
