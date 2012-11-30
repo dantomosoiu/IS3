@@ -115,6 +115,7 @@ public final class DayPanel extends javax.swing.JPanel {
             appointments = appointments2;
         }
         Collections.sort(appointments);
+        Collections.reverse(appointments);
         apps = appointments;
         DefaultTableModel model = (DefaultTableModel) dayTable.getModel();
         if (appointments.size() > model.getRowCount()) {
