@@ -70,7 +70,9 @@ public class BusynessGraph extends javax.swing.JPanel {
         g2.drawLine(PAD, PAD, PAD, h - PAD);
         g2.drawLine(PAD, h - PAD, w - PAD, h - PAD);
         double xScale = (w - 2 * PAD) / (data.length + 1) * 1.7;
-        double yScale = (h - 2 * PAD) / maxApp - 10;
+        double yScale;
+        if (maxApp>0) {yScale = (h - 2 * PAD) / maxApp - 10;}
+        else yScale = 1;
 
 
 

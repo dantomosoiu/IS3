@@ -20,6 +20,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,6 +33,7 @@ public final class ToDoPanel extends javax.swing.JPanel {
     CalendarDate day;
     int category;
     MainFrame mainF;
+    List<Appointment> apps;
 
     /**
      * Creates new form DayPanel
@@ -46,13 +48,12 @@ public final class ToDoPanel extends javax.swing.JPanel {
 
 
         toDoTable.addMouseListener(new java.awt.event.MouseAdapter() {
+
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int selectedRow = toDoTable.getSelectedRow();
-                    String time = toDoTable.getValueAt(selectedRow, 1).toString();
-                    String event = toDoTable.getValueAt(selectedRow, 2).toString();
-                    Appointment a = findEvent(time, event);
+                    Appointment a = findEvent(selectedRow);
                     if (a != null) {
                         EditEventDialog edit = new EditEventDialog();
                         EditEventDialog.run(mainF, a, cal);
@@ -73,9 +74,7 @@ public final class ToDoPanel extends javax.swing.JPanel {
                 int kc = ke.getKeyCode();
                 if (kc == KeyEvent.VK_DELETE) {
                     int selectedRow = toDoTable.getSelectedRow();
-                    String time = toDoTable.getValueAt(selectedRow, 1).toString();
-                    String event = toDoTable.getValueAt(selectedRow, 2).toString();
-                    Appointment a = findEvent(time, event);
+                    Appointment a = findEvent(selectedRow);
                     if (a != null) {
                         ConfirmDelete.run(mainF, a, cal, null);
                     }
@@ -87,8 +86,8 @@ public final class ToDoPanel extends javax.swing.JPanel {
 
     }
 
-    private Appointment findEvent(String t, String eN) {
-        List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, day);
+    private Appointment findEvent(int s) {
+        List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, CalendarDate.moveMonth(12, day));
         if (appointments.size() > 0) {
             if (category != 0) {
                 List<Appointment> appointments2 = new ArrayList<Appointment>();
@@ -99,11 +98,11 @@ public final class ToDoPanel extends javax.swing.JPanel {
                 }
                 appointments = appointments2;
             }
-            if (t.length() > 0) {
-                int hr = Integer.parseInt(t.substring(0, 2));
-                int min = Integer.parseInt(t.substring(3, 5));
+            if (s < apps.size()) {
+                Appointment app = apps.get(s);
+                System.out.println(app.toString());
                 for (Appointment a : appointments) {
-                    if (a.start_time.min == min && a.description.equals(eN) && hr == a.start_time.hr) {
+                    if (app.category==a.category && app.description.equals(a.description) && app.start_time.hr == a.start_time.hr && app.start_time.min == a.start_time.min && app.location.equals(a.location) && app.recur == a.recur) {
                         return a;
                     }
                 }
@@ -117,7 +116,6 @@ public final class ToDoPanel extends javax.swing.JPanel {
     }
 
     public void populateTable() {
-        //dayLabel.setText(CalendarEx.getDateString(day));
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, CalendarDate.moveMonth(12, day));
         if (category != 0) {
             List<Appointment> appointments2 = new ArrayList<Appointment>();
@@ -128,28 +126,55 @@ public final class ToDoPanel extends javax.swing.JPanel {
             }
             appointments = appointments2;
         }
+        List<Appointment> appointments2 = new ArrayList<Appointment>();
+        for (Appointment a : appointments) {
+            if (Appointment.IntFromRecurrence(a.recur) == 0 || Appointment.IntFromRecurrence(a.recur) == 1) appointments2.add(a);
+            else if (Appointment.IntFromRecurrence(a.recur) > 1 && a.date.dateID >= day.dateID) appointments2.add(a);
+            else if (Appointment.IntFromRecurrence(a.recur) > 1) {
+                List<CalendarDate> l = a.getRecurrenceDates(day, CalendarDate.moveMonth(12, day));
+                ListIterator<CalendarDate> it = l.listIterator();
+                while (it.hasNext()) {
+                    CalendarDate th = it.next();
+                    if (th.dateID >= day.dateID) {
+                        appointments2.add(new Appointment(th, a.start_time, a.end_time, a.description, a.location, a.category, a.recur, a.reminder));
+                        break;
+                    }
+                }
+            }
+        }
+        appointments = appointments2;
         Collections.sort(appointments);
+        apps = appointments;
         DefaultTableModel model = (DefaultTableModel) toDoTable.getModel();
-        if (appointments.size() > model.getRowCount()) {
-            while (appointments.size() > model.getRowCount() && appointments.size() < 50) {
-                model.addRow(new Object[]{"Time", "Event"});
+        if (appointments.size() > model.getRowCount() && model.getRowCount() < 51) {
+            while (appointments.size() > model.getRowCount() && model.getRowCount() < 51) {
+                model.addRow(new Object[]{"Date", "Time", "Event"});
             }
         } else if (appointments.size() < model.getRowCount() && model.getRowCount() > 24) {
             while (appointments.size() < model.getRowCount() && model.getRowCount() > 24) {
                 model.removeRow(model.getRowCount() - 1);
             }
         }
-        for (int i = 0; i < model.getRowCount(); i++) {
+        for (int i = 0; i < model.getRowCount() && i < 51; i++) {
             if (i < appointments.size()) {
+                String day_ = Integer.toString(appointments.get(i).date.day);
+                String month = Integer.toString(appointments.get(i).date.month);
+                String year = Integer.toString(appointments.get(i).date.year);
                 String hr = Integer.toString(appointments.get(i).start_time.hr);
                 String min = Integer.toString(appointments.get(i).start_time.min);
-                if (appointments.get(i).start_time.hr < 10) {
+                if (Integer.parseInt(hr) < 10) {
                     hr = "0" + hr;
                 }
-                if (appointments.get(i).start_time.min < 10) {
+                if (Integer.parseInt(min) < 10) {
                     min = "0" + min;
                 }
-                toDoTable.getModel().setValueAt(appointments.get(i).date.toString(), i, 0);
+                if (Integer.parseInt(day_) < 10) {
+                    day_ = "0" + day_;
+                }
+                if (Integer.parseInt(month) < 10) {
+                    month = "0" + month;
+                }
+                toDoTable.getModel().setValueAt(day_ + "/" + month + "/" + year, i, 0);
                 toDoTable.getModel().setValueAt(hr + ":" + min, i, 1);
                 toDoTable.getModel().setValueAt(appointments.get(i).description, i, 2);
             } else {

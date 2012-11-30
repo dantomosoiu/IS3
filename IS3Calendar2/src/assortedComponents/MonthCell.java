@@ -10,6 +10,7 @@
  */
 package assortedComponents;
 
+import is3calendar2.MainFrame;
 import java.awt.Color;
 
 /**
@@ -28,17 +29,20 @@ public class MonthCell extends javax.swing.JPanel {
         } else {
             dayNum.setText("");
         }
-        this.setBackground(Color.white);
+        this.setBackground(MainFrame.emptyBusynessColor);
         if (j > 0) {
             numEvents.setText(Integer.toString(j));
         } else {
             numEvents.setText("");
         }
-        if (j > 4) {
-            this.setBackground(Color.ORANGE);
+        if (j > MainFrame.highBusynessCount) {
+            this.setBackground(MainFrame.highBusynessColor);
         }
-        if (j > 9) {
-            this.setBackground(Color.RED);
+        else if (j > MainFrame.mediumBusynessCount) {
+            this.setBackground(MainFrame.mediumBusynessColor);
+        }
+        else if (j > MainFrame.lowBusynessCount) {
+            this.setBackground(MainFrame.lowBusynessColor);
         }
     }
 

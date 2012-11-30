@@ -11,7 +11,7 @@ public class Appointment implements Comparable<Appointment> {
 
     public enum Recurrence {
 
-        NONE, DAILY, WEEKLY, TWO_WEEKLY, FOUR_WEEKLY
+        NONE, DAILY, WEEKLY, TWO_WEEKLY, FOUR_WEEKLY, YEARLY
     };
     public String description; // Description of the appointment
     public String location;    // where it occurs (optional)
@@ -96,6 +96,8 @@ public class Appointment implements Comparable<Appointment> {
                 return Recurrence.TWO_WEEKLY;
             case 4:
                 return Recurrence.FOUR_WEEKLY;
+            case 5:
+                return Recurrence.YEARLY;
 
             default:
                 return Recurrence.NONE;
@@ -118,6 +120,8 @@ public class Appointment implements Comparable<Appointment> {
                 return 3;
             case FOUR_WEEKLY:
                 return 4;
+            case YEARLY:
+                return 5;
             default:
                 return 0;
 
@@ -183,6 +187,8 @@ public class Appointment implements Comparable<Appointment> {
             gap = 14;
         } else if (recur == Recurrence.FOUR_WEEKLY) {
             gap = 28;
+        } else if (recur == Recurrence.YEARLY) {
+            gap = -1;
         } else {
             gap = 9999;
         }
@@ -192,11 +198,23 @@ public class Appointment implements Comparable<Appointment> {
 
         // loop while cur date id <= end date id
         // increment by gap days
-        while (cur_id <= endID) {
+        while (cur_id <= endID && gap != -1) {
             if (cur_id >= startID) {
                 ids.add(new CalendarDate(cur_id));
             }
             cur_id += gap;
+        }
+        
+        if (gap == -1) {
+            cur_id = CalendarDate.getDateID(new CalendarDate(date.day, date.month, date.year+1));
+            gap = 1;
+            while (cur_id <= endID) {
+                    if (cur_id >= startID) {
+                    ids.add(new CalendarDate(cur_id));
+                }
+                gap++;
+                cur_id = CalendarDate.getDateID(new CalendarDate(date.day, date.month, date.year+gap));
+            }
         }
 
         return ids;
@@ -207,7 +225,7 @@ public class Appointment implements Comparable<Appointment> {
         // that this appointment recurs. 
 
         CalendarDate.getDateID(date);
-
+        
         return getRecurrenceDates(CalendarDate.getDateID(startDate), CalendarDate.getDateID(endDate));
     }
 

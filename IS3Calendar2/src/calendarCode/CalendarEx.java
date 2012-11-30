@@ -22,7 +22,6 @@ public class CalendarEx {
     static Calendar dates = Calendar.getInstance();
 
     public CalendarEx() {
-
         appList = new ArrayList<Appointment>();
     }
 
@@ -59,6 +58,10 @@ public class CalendarEx {
                 }
 
                 the_date = Integer.parseInt(bis.readLine());
+                CalendarDate th = CalendarDate.getDateFromID(the_date);
+                th = new CalendarDate(th.day, th.month, 2012);
+                the_date = CalendarDate.getDateID(th);
+                
                 start_time_h = Integer.parseInt(bis.readLine());
                 start_time_m = Integer.parseInt(bis.readLine());
 
@@ -90,6 +93,132 @@ public class CalendarEx {
                 // read through separators
                 s = bis.readLine();
                 s = bis.readLine();
+
+                //ap.printAppointment();
+            }
+
+            // dispose all the resources after using them.
+            bis.close();
+
+            return true;
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean openICalendar(String fileName) {
+        // given the file name of an ICal calender, imports it
+        //Must have DTSTART and SUMMARY fields in that order!
+        //If the calendare were further developed this functionality would be added
+        //an import button in the settings.
+
+        BufferedReader bis;
+
+        Appointment ap;
+        try {
+
+            // Here BufferedInputStream is added for fast reading.
+            // open file
+            bis = new BufferedReader(new FileReader(fileName));
+
+            // dis.available() returns 0 if the file does not have more lines.
+
+            String s = "";
+            while (s != null && !s.equals("BEGIN:VEVENT")) {
+                s = bis.readLine();
+            }
+            System.out.println(s);
+            int the_date, id;
+            int start_time_h, start_time_m, end_time_h, end_time_m;
+
+            String description, location, category;
+            int recurrence, reminder;
+            max_id = 406;
+
+            while (s != null) {
+
+                // read appointments until we run out of file
+                id = (int) max_id;
+                max_id++;
+                // update the max_id found in the calendar
+                if (id > max_id) {
+                    max_id = id;
+                }
+                while (s != null && !s.startsWith("DTSTART:")) {
+                    s = bis.readLine();
+                    
+                }
+                System.out.println(s);
+                if (s != null) the_date = CalendarDate.getDateID(Integer.parseInt(s.substring(14)), Integer.parseInt(s.substring(12, 14)), Integer.parseInt(s.substring(8, 12)));
+                else break;
+                if (s.length() > 15 && s.substring(15,16).equals("T")) {
+                    start_time_h = Integer.parseInt(s.substring(15, 17));
+                    start_time_m = Integer.parseInt(s.substring(17, 19));
+                } else {
+                    start_time_h = 0;
+                    start_time_m = 0;
+                }
+
+                end_time_h = start_time_h + 1;
+                end_time_m = start_time_m + 1;
+
+                while (s != null && !s.startsWith("SUMMARY:")) {
+                    s = bis.readLine();
+                }
+                System.out.println(s);
+                description = s.substring(8);
+                location = "";
+                
+
+                if (description.toLowerCase().contains("birthday")) category = "4";
+                else category = "0";
+                reminder = 0;
+                
+                s = bis.readLine();
+                System.out.println(s);
+                while (s != null && !s.equals("BEGIN:VEVENT") && !s.startsWith("RRULE:FREQ=")) {
+                    s = bis.readLine();
+                }
+                if (s.startsWith("RRULE:FREQ=")) {
+                    if (s.endsWith("YEARLY")) recurrence = 5;
+                    else if (s.endsWith("DAILY")) recurrence = 1;
+                    else if (s.endsWith("WEEKLY")) recurrence = 2;
+                    else if (s.endsWith("WEEKLY;INTERVAL=2")) recurrence = 3;
+                    else if (s.endsWith("WEEKLY;INTERVAL=4")) recurrence = 4;
+                    else recurrence = 0;
+                    System.out.println(s);
+                }
+                else recurrence = 0;
+                
+                
+                
+                
+                // create the appointment object
+                ap = new Appointment(new CalendarDate(the_date),
+                        new CalendarTime(start_time_h, start_time_m),
+                        new CalendarTime(end_time_h, end_time_m),
+                        description,
+                        location,
+                        Integer.parseInt(category),
+                        Appointment.RecurrenceFromInt(recurrence),
+                        reminder);
+
+                ap.setID(id);
+
+                // add appointment to the appointments list
+                appList.add(ap);
+
+                // read through separators
+                while (s != null && !s.equals("BEGIN:VEVENT")) {
+                    s = bis.readLine();
+                }
+
 
                 //ap.printAppointment();
             }

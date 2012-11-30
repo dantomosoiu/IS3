@@ -37,6 +37,7 @@ public class EditEventDialog extends javax.swing.JDialog {
         app = a;
         mainF = mf;
         initComponents();
+        if (LocationInput1.getText().length()<1) LocationInput1.setText("(Location)");
 
         Toolkit kit = this.getToolkit();
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -119,8 +120,13 @@ public class EditEventDialog extends javax.swing.JDialog {
             }
         });
 
-        recurrence.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Daily", "Weekly", "Two Weekly", "Four Weekly" }));
+        recurrence.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Daily", "Weekly", "Two Weekly", "Four Weekly", "Yearly" }));
         recurrence.setSelectedIndex(Appointment.IntFromRecurrence(app.recur));
+        recurrence.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                recurrenceActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Recurrance");
 
@@ -241,6 +247,10 @@ private void RemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
     ConfirmDelete.run(mainF, app, cal, this);
 }//GEN-LAST:event_RemoveActionPerformed
+
+private void recurrenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recurrenceActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_recurrenceActionPerformed
 
     /**
      * @param args the command line arguments

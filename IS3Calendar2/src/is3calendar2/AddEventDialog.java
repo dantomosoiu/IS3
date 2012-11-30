@@ -120,7 +120,7 @@ public class AddEventDialog extends javax.swing.JDialog {
             }
         });
 
-        recurrence.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Daily", "Weekly", "Two Weekly", "Four Weekly" }));
+        recurrence.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "None", "Daily", "Weekly", "Two Weekly", "Four Weekly", "Yearly" }));
 
         jLabel1.setText("Recurrance");
 

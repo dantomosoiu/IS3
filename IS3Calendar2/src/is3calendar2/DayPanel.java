@@ -32,6 +32,7 @@ public final class DayPanel extends javax.swing.JPanel {
     CalendarDate day;
     int category;
     MainFrame mainF;
+    List<Appointment> apps;
 
     /**
      * Creates new form DayPanel
@@ -48,9 +49,7 @@ public final class DayPanel extends javax.swing.JPanel {
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 if (e.getClickCount() == 2) {
                     int selectedRow = dayTable.getSelectedRow();
-                    String time = dayTable.getValueAt(selectedRow, 0).toString();
-                    String event = dayTable.getValueAt(selectedRow, 1).toString();
-                    Appointment a = findEvent(time, event);
+                    Appointment a = findEvent(selectedRow);
                     if (a != null) {
                         EditEventDialog.run(mainF, a, cal);
                     }
@@ -68,9 +67,7 @@ public final class DayPanel extends javax.swing.JPanel {
                 int kc = ke.getKeyCode();
                 if (kc == KeyEvent.VK_DELETE) {
                     int selectedRow = dayTable.getSelectedRow();
-                    String time = dayTable.getValueAt(selectedRow, 0).toString();
-                    String event = dayTable.getValueAt(selectedRow, 1).toString();
-                    Appointment a = findEvent(time, event);
+                    Appointment a = findEvent(selectedRow);
                     if (a != null) {
                         ConfirmDelete.run(mainF, a, cal, null);
                     }
@@ -82,7 +79,7 @@ public final class DayPanel extends javax.swing.JPanel {
 
     }
 
-    private Appointment findEvent(String t, String eN) {
+    private Appointment findEvent(int s) {
         List<Appointment> appointments = cal.getAppointmentsBetweenDates(day, day);
         if (appointments.size() > 0) {
             if (category != 0) {
@@ -94,14 +91,8 @@ public final class DayPanel extends javax.swing.JPanel {
                 }
                 appointments = appointments2;
             }
-            if (t.length() > 0) {
-                int hr = Integer.parseInt(t.substring(0, 2));
-                int min = Integer.parseInt(t.substring(3, 5));
-                for (Appointment a : appointments) {
-                    if (a.start_time.min == min && a.description.equals(eN) && hr == a.start_time.hr) {
-                        return a;
-                    }
-                }
+            if (s < apps.size()) {
+                return apps.get(s);
             }
         }
         return null;
@@ -124,6 +115,7 @@ public final class DayPanel extends javax.swing.JPanel {
             appointments = appointments2;
         }
         Collections.sort(appointments);
+        apps = appointments;
         DefaultTableModel model = (DefaultTableModel) dayTable.getModel();
         if (appointments.size() > model.getRowCount()) {
             while (appointments.size() > model.getRowCount()) {
