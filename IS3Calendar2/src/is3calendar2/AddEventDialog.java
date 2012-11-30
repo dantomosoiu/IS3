@@ -8,6 +8,7 @@ import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import calendarCode.CalendarTime;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -16,6 +17,8 @@ import java.awt.Toolkit;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -214,9 +217,31 @@ public class AddEventDialog extends javax.swing.JDialog {
 
 
         cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText(), LocationInput1.getText(), category.getSelectedIndex(), Appointment.RecurrenceFromInt(recurrence.getSelectedIndex()), 0));
-        //sendEmail("noreply@is3calendar.com", InviteInput.getText(), "Test", "Test");
+
+        if (!InviteInput.getText().equals("Invite") && !InviteInput.getText().equals("")) {
+            Desktop desktop;
+            String mail = "mailto:" + InviteInput.getText().replace(" ", "") + "?subject=" + EventNameInput.getText().replace(" ", "%20") + "&body=You%20Are%20Invited%20To%20" + EventNameInput.getText().replace(" ", "%20") + "%20On%20" + date.toString() + "%20At%20" + start;
+            if (Desktop.isDesktopSupported()
+                    && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+                URI mailto = null;
+                try {
+                    mailto = new URI(mail);
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(AddEventDialog.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    desktop.mail(mailto);
+                } catch (IOException ex) {
+                    Logger.getLogger(AddEventDialog.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                // TODO fallback to some Runtime.exec(..) voodoo?
+                throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+            }
+        }
+
         cal.saveCalendar("./cal");
-        
+
 
         this.mainFrame.RefreshView();
         this.dispose();
@@ -255,10 +280,12 @@ public class AddEventDialog extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             @Override
             public void run() {
                 AddEventDialog dialog = new AddEventDialog(new javax.swing.JFrame(), true, calendar, mainframe);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         try {
@@ -272,64 +299,7 @@ public class AddEventDialog extends javax.swing.JDialog {
             }
         });
     }
-    
-    public void sendEmail(
-    String aFromEmailAddr, String aToEmailAddr,
-    String aSubject, String aBody
-  ){
-    //Here, no Authenticator argument is used (it is null).
-    //Authenticators are used to prompt the user for user
-    //name and password.
-    Session session = Session.getDefaultInstance( fMailServerConfig, null );
-    MimeMessage message = new MimeMessage( session );
-    try {
-      //the "from" address may be set in code, or set in the
-      //config file under "mail.from" ; here, the latter style is used
-      //message.setFrom( new InternetAddress(aFromEmailAddr) );
-      message.addRecipient(
-        Message.RecipientType.TO, new InternetAddress(aToEmailAddr)
-      );
-      message.setSubject( aSubject );
-      message.setText( aBody );
-      Transport.send( message );
-    }
-    catch (MessagingException ex){
-      System.err.println("Cannot send email. " + ex);
-    }
-  }
-     private static Properties fMailServerConfig = new Properties();
 
-  static {
-    fetchConfig();
-  }
-
-  /**
-  * Open a specific text file containing mail server
-  * parameters, and populate a corresponding Properties object.
-  */
-  private static void fetchConfig() {
-    InputStream input = null;
-    try {
-      //If possible, one should try to avoid hard-coding a path in this
-      //manner; in a web application, one should place such a file in
-      //WEB-INF, and access it using ServletContext.getResourceAsStream.
-      //Another alternative is Class.getResourceAsStream.
-      //This file contains the javax.mail config properties mentioned above.
-      input = new FileInputStream( "./mailconfig" );
-      fMailServerConfig.load( input );
-    }
-    catch ( IOException ex ){
-      System.err.println("Cannot open and load mail server properties file.");
-    }
-    finally {
-      try {
-        if ( input != null ) input.close();
-      }
-      catch ( IOException ex ){
-        System.err.println( "Cannot close mail server properties file." );
-      }
-    }
-  }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox AMPMList;

@@ -53,9 +53,11 @@ public class BusynessGraph extends javax.swing.JPanel {
 
 
         for (Appointment app : appList) {
-            data[app.date.dateID - firstDay.dateID + 1]++;
-            if (data[app.date.dateID - firstDay.dateID + 1] > maxApp) {
-                maxApp = data[app.date.dateID - firstDay.dateID + 1];
+            if ((app.date.dateID - firstDay.dateID + 1) < data.length) {
+                data[app.date.dateID - firstDay.dateID + 1]++;
+                if (data[app.date.dateID - firstDay.dateID + 1] > maxApp) {
+                    maxApp = data[app.date.dateID - firstDay.dateID + 1];
+                }
             }
         }
 
@@ -71,8 +73,11 @@ public class BusynessGraph extends javax.swing.JPanel {
         g2.drawLine(PAD, h - PAD, w - PAD, h - PAD);
         double xScale = (w - 2 * PAD) / (data.length + 1) * 1.7;
         double yScale;
-        if (maxApp>0) {yScale = (h - 2 * PAD) / maxApp - 10;}
-        else yScale = 1;
+        if (maxApp > 0) {
+            yScale = (h - 2 * PAD) / maxApp - 10;
+        } else {
+            yScale = 1;
+        }
 
 
 
@@ -99,20 +104,20 @@ public class BusynessGraph extends javax.swing.JPanel {
             g2.drawLine(prevX, prevY, x, y);
             prevX = x;
             prevY = y;
-        
-            
-            
-            if(data[j]==maxApp){
+
+
+
+            if (data[j] == maxApp) {
                 g2.setFont(new Font("TimesRoman", Font.PLAIN, 10));
                 g2.drawString("(" + Integer.toString(maxApp) + " events)", x0 - 55, y);
             }
 
         }
-        
-        
-        
-        
-        
+
+
+
+
+
     }
 
     /**
