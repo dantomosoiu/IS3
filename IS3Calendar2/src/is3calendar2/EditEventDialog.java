@@ -9,11 +9,15 @@ import calendarCode.Appointment;
 import calendarCode.CalendarDate;
 import calendarCode.CalendarEx;
 import calendarCode.CalendarTime;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -232,6 +236,28 @@ public class EditEventDialog extends javax.swing.JDialog {
         cal.removeAppointment(app);
         cal.addAppointment(new Appointment(date, start, end, EventNameInput.getText(), LocationInput1.getText(), category.getSelectedIndex(), Appointment.RecurrenceFromInt(recurrence.getSelectedIndex()), 0));
 
+        if (!InviteInput.getText().equals("Invite") && !InviteInput.getText().equals("")) {
+            Desktop desktop;
+            String mail = "mailto:" + InviteInput.getText().replace(" ", "") + "?subject=" + EventNameInput.getText().replace(" ", "%20") + "&body=You%20Are%20Invited%20To%20" + EventNameInput.getText().replace(" ", "%20") + "%20On%20" + date.toString() + "%20At%20" + start;
+            if (Desktop.isDesktopSupported()
+                    && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+                URI mailto = null;
+                try {
+                    mailto = new URI(mail);
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(AddEventDialog.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    desktop.mail(mailto);
+                } catch (IOException ex) {
+                    Logger.getLogger(AddEventDialog.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                // TODO fallback to some Runtime.exec(..) voodoo?
+                throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+            }
+        }
+        
         cal.saveCalendar("./cal");
 
         mainF.RefreshView();
